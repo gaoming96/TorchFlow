@@ -5,7 +5,7 @@ Author: Ming Gao
 Conditional VAE_PT.
 
 Mean: dimension flow: 784+10->128->100, relu+linear
-Logvar: dimension flow: 784->128->100, relu+linear
+Logvar: dimension flow: 784+10->128->100, relu+linear
 Sample z~N(mean,var). [batch, 100]
 
 P(X|z): dimension flow: 100+10->128->784, relu+sigmod
