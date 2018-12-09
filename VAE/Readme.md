@@ -22,7 +22,7 @@ The codes are based on original papers and wiseodd/generative-models, however, I
 
 Model structure of VAE:
 
-![](./pics/vae_structure.png)
+![](.././pics/vae_structure.png)
 
 ### Model structure of CVAE:
 - Mean: dimension flow: 784+10->128->100, relu+linear
