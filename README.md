@@ -70,7 +70,7 @@ However, because this regularization need posterior P(c|X), which is hard to get
 
 - Discriminator: dimension flow: 784->128->1, relu+sigmod
 - Generator: dimension flow: 16+10->256->784, relu+sigmod
-- Q:                                     784->128->10, relu+softmax
+- Q:-----------------------------------------784->128->10, relu+softmax
 - Use xavier to init weights; use U(-1,1) to init z (z:[batch,16]); use N(1,1) to init c (c:[batch,10])
 - c may control the width or incline; Mulcat(10) of c may stand for labels
 - QLOSS=E(P(Q(G_sample)|c))
