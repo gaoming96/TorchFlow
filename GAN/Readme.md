@@ -44,6 +44,7 @@ Model structure of GANs: (left is GAN, left+red is CGAN, right is InfoGAN)
 In CycleGAN, we have two datasets and we don't need to sample noise z.
 
 ![](.././pics/cycle_gan_structure.png)
+![](.././pics/cycle_gan_structure1.png)
 
 Exemplar results on testset: horse -> zebra
 
