@@ -7,6 +7,24 @@ Some implementations using Pytorch and Tensorflow.
 
 VAE is the simplest Generative Model. It learns `mean` and `log_sd` of the latent variable. After the model is built, we may generate samples from a Normal distribution. The Conditional VAE has labels as the input and we can generate samples fixing the specific label.
 
+### Model structure of VAE:
+- Mean: dimension flow: 784->128->100, relu+linear
+- Logvar: dimension flow: 784->128->100, relu+linear
+- Q(z|X): sample z~N(mean,var). [batch, 100]
+- P(X|z): dimension flow: 100->128->784, relu+sigmod
+- LOSS=E[log P(X|z)]+KL(Q(z|X) || N(0,1)). First loss is ordinary cross entrophy
+
+![](./vae_structure.png)
+
+### Model structure of CVAE:
+- Mean: dimension flow: 784+10->128->100, relu+linear
+- Logvar: dimension flow: 784+10->128->100, relu+linear
+- Q(z|X): sample z~N(mean,var). [batch, 100]
+- P(X|z): dimension flow: 100+10->128->784, relu+sigmod
+- LOSS=E[log P(X|z)]+KL(Q(z|X) || N(0,1)). First loss is ordinary cross entrophy
+- We set x and y as the input. CVAE can both predict a figure and generate selected label's figure
+
+
 The codes are based on original papers and wiseodd/generative-models, however, I make some improvements:
 1. I try to make both Pytorch and Tensorflow's code similarly to each other.
 2. Both codes are as simple and concise as possible (don't use argparse or some fancy utils).
