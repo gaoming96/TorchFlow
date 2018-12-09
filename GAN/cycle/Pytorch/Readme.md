@@ -1,5 +1,5 @@
 # CycleGAN_Pytorch
-Pytorch implementation of CycleGAN.
+GPU Pytorch implementation of CycleGAN.
 Based on LynnHo/CycleGAN-Tensorflow-PyTorch/tree/master/pytorch and the original paper, but is concise.
 
 ## Download Datasets
