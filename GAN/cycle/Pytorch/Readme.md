@@ -58,3 +58,6 @@ First we do transformations and turn the dataset into `torch.utils.data.DataLoad
 Then we set the models, define the LOSS and give the outcomes in folder `/sample_images_while_training`.
 
 Pay attention to the GPU usage, and in train & test, we use different Modules:  `Ga.train()` & `Ga.eval()` (because batch_norm is different).
+
+### LOSS
+![](../../.././pics/cycle_gan_structure1.png)
