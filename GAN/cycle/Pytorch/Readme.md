@@ -48,4 +48,13 @@ It seems like the program tends to recursively read in files, that is convenient
 
 See - https://github.com/pytorch/examples/issues/236.
 
-## Train
+## Train & test
+- `models.py` contains two class: `discriminator` and `generator`. In order to save memory, we comment several `Residual Block`s.
+- `utils.py` contains several utils: cuda, gpu version; make directory; ItemPool.
+- `train.py` trains the model.
+
+First we do transformations and turn the dataset into `torch.utils.data.DataLoader`. Note that we select batch_size=1.
+
+Then we set the models, define the LOSS and give the outcomes in folder `/sample_images_while_training`.
+
+Pay attention to the GPU usage, and in train & test, we use different Modules:  `Ga.train()` & `Ga.eval()` (because batch_norm is different).
