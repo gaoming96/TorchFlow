@@ -51,6 +51,8 @@ The codes are based on original papers and wiseodd/generative-models, however, I
 - Discriminator: dimension flow: 784->128->1, relu+sigmod
 - Generator: dimension flow: 100->128->784, relu+sigmod
 - Use xavier to init weights; use U(-1,1) to init z
+- DLOSS=`binary_cross_entropy(D_real, ones_label)+binary_cross_entropy(D_fake, zeros_label)`
+- GLOSS=`binary_cross_entropy(D_fake, ones_label)`
 
 ### Model structure of CGAN:
 - Discriminator: dimension flow: 784+10->128->1, relu+sigmod
@@ -64,12 +66,15 @@ The codes are based on original papers and wiseodd/generative-models, however, I
 - Q:                                     784->128->10, relu+softmax
 - Use xavier to init weights; use U(-1,1) to init z (z:[batch,16]); use N(1,1) to init c (c:[batch,10])
 - c may control the width or incline
+- QLOSS=E(P(Q(G_sample)|c))
 
 Model structure of GANs: (left is GAN, left+red is CGAN, right is InfoGAN)
 
 ![](./pics/gan_structure.png)
 
 ### Model structure of CycleGAN:
+In CycleGAN, we have two datasets and we don't need to sample noise z.
+
 ![](./pics/cycle_gan_structure.png)
 
 Exemplar results on testset: horse -> zebra
