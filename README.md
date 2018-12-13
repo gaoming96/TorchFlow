@@ -89,3 +89,29 @@ Exemplar results on testset: horse -> zebra
 
 ![](./pics/horse2zebra.gif)
 ![](./pics/horse2zebra1.gif)
+
+## Recurrent Neural Network (RNN)
+1. [Classifying Names with a Character-Level RNN]
+2. [Generating Names with a Character-Level RNN]
+
+RNN trains a hidden state (in LSTM trains several gates and cell state) and in each sequence (time step), we use both input and current hidden state to compute the next state. After that, we use a linear network to convey hidden state into output.
+
+The first two models are based on [Pytorch tutorial](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html), however, I make some improvements:
+1. I try to make both Pytorch and Tensorflow's code similarly to each other.
+2. Both codes are as simple and concise as possible (don't use argparse or some fancy utils).
+3. Both codes are updated to the latest version (TF: API r1.12, PT: Version 1.0 (`Variable` is deprecated)).
+4. In original Pytorch tutorial, the author defines RNN himself. However, I use `torch.nn.RNN`, which is more understandable.
+
+### Model structures
+Following figures are model structures of RNN, LSTM and Bidirectional-RNN.
+![](./pics/rnn_structure.jpg)
+![](./pics/rnn_structure.png)
+![](./pics/lstm_structure.jpg)
+![](./pics/bi_rnn_structure.png)
+
+### Classifying Names with a Character-Level RNN
+Final result:
+$ python predict.py Schmidhuber
+    (-0.19) German
+    (-2.48) Czech
+    (-2.68) Dutch
