@@ -119,16 +119,17 @@ $ python predict.py Schmidhuber
     (-2.48) Czech
     (-2.68) Dutch
 ```
-Dataset: included in the ``data/names`` directory are 18 text files named as
+#### Flow:
+1. Dataset: included in the ``data/names`` directory are 18 text files named as
 "[Language].txt". Each file contains a bunch of names, one name per
 line, mostly romanized (but we still need to convert from Unicode to
 ASCII).
-
-Input: In each round, one word (eg: `Hinton`), one output (`Scottish`).
-
-`Hinton`:[seq=6, batch=1, input_dim=57], hidden:[seq=6, batch=1, hid_dim=128].
+2. Input: In each round, one word (eg: `Hinton`), one output (`Scottish`).
+3. `Hinton`:[seq=6, batch=1, input_dim=57] -> hidden:[seq=6, batch=1, hid_dim=128].
 Then we use hidden[-1,:,:] to do linear network -> output:[1,18].
 Finally, we use output and `Scottish`[1,18] (one hot) to compute loss.
+
+**Note that in each time step, we feed in Hinton[i,:,:] to get hidden [i,:,:].**
 
 **Note that hidden[-1,:,:] is the last time step, which can be regard as information we learnt from all the sequence (6 time step).**
 
