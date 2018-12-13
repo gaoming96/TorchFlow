@@ -199,7 +199,7 @@ We set batch_size=64. Since a figure is 28\*28, we set seq=28 (each row of a fig
 #### Flow:
 2. Input: In each round, 64 figures and their numbers.
 3. [batch=64,seq=28, input_dim=28]-> (`tf.unstack`) 28@[batch=64,input_dim=28] -> hidden: 28@[batch=64, hid_dim=128].
-Then we use hidden[-1] to do linear network -> output:[1,10].
+Then we use hidden[-1] to do linear network -> output:[64,10].
 Finally, we use output and number (one hot) to compute loss.
 
 **Note that in each time step, we feed in input[i] to get hidden[i].**
