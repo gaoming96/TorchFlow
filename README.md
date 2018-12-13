@@ -1,6 +1,27 @@
 # TorchFlow
 Some implementations using Pytorch and Tensorflow.
 
+## API
+
+### Tensorflow
+In VAE and GAN (except CycleGAN), we use `tf.Variable` to construct weights explicitly. We only use `tf.matmul` to define layers, `tf.nn.sigmoid`, `tf.nn.relu` or `tf.nn.softmax` to make activations. For CNN, we use `tf.nn.conv2d`. 
+
+The advantage of just using tf base functions is that when updating a subset of weights, we can use
+```python
+w1=tf.Variable()
+w2=tf.Variable()
+theta_some = [w1, w2]
+
+solver = tf.train.AdamOptimizer().minimize(loss, var_list=theta_some)
+```
+
+In CycleGAN and RNN, we don't define weights ourselves. We use `tf.layers.dense`, `tf.layers.conv2d` for CNN and 
+`tf.nn.rnn_cell` or `tf.nn.rnn` for RNN.
+
+If we want to update a subset of weights, we need to state layers' names.
+
+
+
 ## Variational Autoencoder (VAE)
 1. [Vanilla VAE](https://arxiv.org/abs/1312.6114)
 2. [Conditional VAE](https://arxiv.org/abs/1406.5298)
