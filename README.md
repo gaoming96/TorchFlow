@@ -124,6 +124,14 @@ Dataset: included in the ``data/names`` directory are 18 text files named as
 line, mostly romanized (but we still need to convert from Unicode to
 ASCII).
 
+Input: In each round, one word (eg: `Hinton`), one output (`Scottish`).
+
+`Hinton`:[seq=6, batch=1, input_dim=57], hidden:[seq=6, batch=1, hid_dim=128].
+Then we use hidden[-1,:,:] to do linear network -> output:[1,18].
+Finally, we use output and `Scottish`[1,18] (one hot) to compute loss.
+
+**Note that hidden[-1,:,:] is the last time step, which can be regard as information we learnt from all the sequence (6 time step).**
+
 We use batch=1, input_dim=57 (totally 57 characters in vocabulary dictionary),
 hidden_dim=128, output_dim=18 (totally 18 languages which we want to classify).
 eg: for word `Hinton`, seq=6 (6 characters in word `Hinton`).
