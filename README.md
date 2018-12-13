@@ -110,8 +110,49 @@ Following figures are model structures of RNN, LSTM and Bidirectional-RNN.
 ![](./pics/bi_rnn_structure.png)
 
 ### Classifying Names with a Character-Level RNN
-Final result:
+Given a name, we can predict the language used:
+```python
 $ python predict.py Schmidhuber
     (-0.19) German
     (-2.48) Czech
     (-2.68) Dutch
+```
+Dataset: included in the ``data/names`` directory are 18 text files named as
+"[Language].txt". Each file contains a bunch of names, one name per
+line, mostly romanized (but we still need to convert from Unicode to
+ASCII).
+
+We use batch=1, input_dim=57 (totally 57 characters in vocabulary dictionary),
+hidden_dim=128, output_dim=18 (totally 18 languages which we want to classify).
+eg: for word `Hinton`, seq=6 (6 characters in word `Hinton`).
+
+Key codes:
+```python
+class RNN(nn.Module):
+    def __init__(self, input_dim, hidden_dim, layer_dim, output_dim):
+        super(RNN, self).__init__()
+        
+        self.hidden_dim = hidden_dim
+        self.layer_dim = layer_dim
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.rnn = nn.RNN(self.input_dim, self.hidden_dim, self.layer_dim, nonlinearity='relu')
+        self.fc = nn.Linear(self.hidden_dim, self.output_dim)
+    
+    def forward(self, x):
+        out, _ = self.rnn(x)
+        out = self.fc(out[-1,:, :]) 
+        return out
+        
+rnn = RNN(n_letters, n_hidden, 1,n_categories)
+optimizer=optim.SGD(rnn.parameters(),lr=0.005)
+criterion = nn.CrossEntropyLoss()
+
+for iter in range(1, n_iters + 1):
+    category, line, category_tensor, line_tensor = randomTrainingExample()
+    optimizer.zero_grad()
+    output = rnn(line_tensor)
+    loss = criterion(output, category_tensor)
+    loss.backward()
+    optimizer.step()
+``` 
