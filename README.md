@@ -96,6 +96,8 @@ Exemplar results on testset: horse -> zebra
 
 RNN trains a hidden state (in LSTM trains several gates and cell state) and in each sequence (time step), we use both input and current hidden state to compute the next state. After that, we use a linear network to convey hidden state into output.
 
+In the first example, we see that RNN can also make **prediction**. We can predict a category after reading in all the letters of a name, and use the last time step (sequence) output to calculate cross-entrophy loss.
+
 The first two models are based on [Pytorch tutorial](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html), however, I make some improvements:
 1. I try to make both Pytorch and Tensorflow's code similarly to each other.
 2. Both codes are as simple and concise as possible (don't use argparse or some fancy utils).
@@ -125,6 +127,8 @@ ASCII).
 We use batch=1, input_dim=57 (totally 57 characters in vocabulary dictionary),
 hidden_dim=128, output_dim=18 (totally 18 languages which we want to classify).
 eg: for word `Hinton`, seq=6 (6 characters in word `Hinton`).
+
+We see that RNN can also make **prediction**. We can predict a category after reading in all the letters of a name, and use the last time step (sequence) output to calculate cross-entrophy loss.
 
 Key codes:
 ```python
