@@ -112,12 +112,13 @@ Exemplar results on testset: horse -> zebra
 ![](./pics/horse2zebra1.gif)
 
 ## Recurrent Neural Network (RNN)
-1. [Classifying Names with a Character-Level RNN]
-2. [Generating Names with a Character-Level RNN]
+1. [Classifying Names with a Character-Level RNN] (PT)
+2. [Generating Names with a Character-Level RNN] (PT)
+3. [Predicting hand-written number] (TF)
 
 RNN trains a hidden state (in LSTM trains several gates and cell state) and in each sequence (time step), we use both input and current hidden state to compute the next state. After that, we use a linear network to convey hidden state into output.
 
-In the first example, we see that RNN can also make **prediction**. We can predict a category after reading in all the letters of a name, and use the last time step (sequence) output to calculate cross-entrophy loss.
+In the first and third examples, we see that RNN can also make **prediction**. We can predict a category after reading in all the letters of a name, and use the last time step (sequence) output to calculate cross-entrophy loss.
 
 The first two models are based on [Pytorch tutorial](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html), however, I make some improvements:
 1. I try to make both Pytorch and Tensorflow's code similarly to each other.
@@ -132,7 +133,7 @@ Following figures are model structures of RNN, LSTM and Bidirectional-RNN.
 ![](./pics/lstm_structure.jpg)
 ![](./pics/bi_rnn_structure.png)
 
-### Classifying Names with a Character-Level RNN
+### Classifying names with a character-level RNN (PT)
 Given a name, we can predict the language used:
 ```python
 $ python predict.py Schmidhuber
@@ -190,3 +191,18 @@ for iter in range(1, n_iters + 1):
     loss.backward()
     optimizer.step()
 ``` 
+
+### Predicting hand-written number (TF)
+
+We set batch_size=64. Since a figure is 28\*28, we set seq=28 (each row of a figure) and input_dim=28. In this example, seq_length is fixed while in the above, seq depends on words.
+
+#### Flow:
+2. Input: In each round, 64 figures and their numbers.
+3. [batch=64,seq=28, input_dim=28]-> (`tf.unstack`) 28@[batch=64,input_dim=28] -> hidden: 28@[batch=64, hid_dim=128].
+Then we use hidden[-1] to do linear network -> output:[1,10].
+Finally, we use output and number (one hot) to compute loss.
+
+**Note that in each time step, we feed in input[i] to get hidden[i].**
+
+**Note that hidden[-1] is the last time step, which can be regard as information we learnt from all the sequence (28 time steps).**
+
