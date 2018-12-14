@@ -195,7 +195,7 @@ for iter in range(1, n_iters + 1):
     optimizer.step()
 ``` 
 ### Generating names from languages (PT)
-Generate names. [failed, I don't know why...]
+Generate names. [failed, I don't know why... Maybe because I forget to concate language with input, but if I only use Chinese language, it still not learnt]
 
 #### Flow:
 1. Dataset: included in the ``data/names`` directory are 18 text files named as
