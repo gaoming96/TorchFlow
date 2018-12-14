@@ -194,6 +194,21 @@ for iter in range(1, n_iters + 1):
     loss.backward()
     optimizer.step()
 ``` 
+### Generating names from languages (PT)
+Generate names. [failed, I don't know why...]
+
+#### Flow:
+1. Dataset: included in the ``data/names`` directory are 18 text files named as
+"[Language].txt". Each file contains a bunch of names, one name per
+line, mostly romanized (but we still need to convert from Unicode to
+ASCII).
+2. Input: In each round, one word (eg: `Hinton`), one output (`intonEOS`). `EOS` means the end of word.
+3. `Hinton`:[seq=6, batch=1, input_dim=59] -> hidden:[seq=6, batch=1, hid_dim=128].
+4. Then we use hidden[i,:,:] to do linear network -> logit:[seq=6, batch=1, input_dim=59] (updating hidden each time step).
+5. Finally, we use logit and output:[seq=6, batch=1, input_dim=59] to compute loss (sum of loss of each time step).
+6. For generating step, given a language and a beginning letter `a` for example, put `a`:[1,1,59] in the model to get logit:[1,1,59] to get second letter. Repeat.
+
+We use batch=1, input_dim=59 (totally 59 characters in vocabulary dictionary), hidden_dim=128.
 
 ### Predicting hand-written number (TF)
 
@@ -251,3 +266,5 @@ The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letter
 4. We compute loss of logit: 25@[1,65] and output: 25@[1,65] (sum of all time step).
 5. In train step, we use the current hidden state as the input hidden state in each epic (one epic: num of rounds that train all chars once), and then clear to 0 in next epic.
 6. For test step, we first give 25 letters. Then each step, we choose the highest prob of the 26th letter. After that, we abandon the first letter and choose 2-26th letters as the input and repeat. We use current hidden state and reuse hidden-output as hidden-input.
+
+**Note: here seq=25 is fixed. But we can set `seq` to be a `placeholder` to make it changeable in test part.**
