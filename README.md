@@ -207,6 +207,37 @@ Finally, we use output and number (one hot) to compute loss.
 
 **Note that hidden[-1] is the last time step, which can be regard as information we learnt from all the sequence (28 time steps).**
 
+Key codes:
+```python
+tf.reset_default_graph()
+X = tf.placeholder("float", [None, timesteps, num_input])
+Y = tf.placeholder("float", [None, num_classes])
+
+X_list = tf.unstack(X, timesteps, 1)
+
+lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(num_hidden, forget_bias=1.0)
+outputs, _ = tf.nn.static_rnn(lstm_cell, X_list, dtype=tf.float32)
+
+logits = tf.layers.dense(outputs[-1], units=num_classes, activation=None,
+                         kernel_initializer=tf.random_normal_initializer(seed=0))
+
+loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=Y))
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
+train_op = optimizer.minimize(loss_op)
+
+correct_pred = tf.equal(tf.argmax(prediction, 1), tf.argmax(Y, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+
+init = tf.global_variables_initializer()
+
+with tf.Session() as sess:
+    sess.run(init)
+    for step:
+        batch_x, batch_y = mnist.train.next_batch(batch_size)
+        batch_x = batch_x.reshape((batch_size, timesteps, num_input))
+        _,loss=sess.run([train_op,loss], feed_dict={X: batch_x, Y: batch_y})
+```
+
 ### Generating shakespeares play (TF)
 
 The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letters). We generate new chars after given the beginning of words.
