@@ -216,5 +216,5 @@ The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letter
 2. `tf.unstack` to 25@[1,65], then we RNN -> hidden: 25@[1,100].
 3. In each hidden[i], we define linear network (reuse weight for all time step), to get logit: 25@[1,65].
 4. We compute loss of logit: 25@[1,65] and output: 25@[1,65] (sum of all time step).
-5. In train step, we use the current hidden state as the input hidden state in each epic (trained all chars one time), and then clear to 0 in next epic.
+5. In train step, we use the current hidden state as the input hidden state in each epic (one epic: num of rounds that train all chars once), and then clear to 0 in next epic.
 6. For test step, we first give 25 letters. Then each step, we choose the highest prob of the 26th letter. After that, we abandon the first letter and choose 2-26th letters as the input and repeat. We use current hidden state and reuse hidden-output as hidden-input.
