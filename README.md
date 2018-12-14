@@ -112,9 +112,10 @@ Exemplar results on testset: horse -> zebra
 ![](./pics/horse2zebra1.gif)
 
 ## Recurrent Neural Network (RNN)
-1. [Classifying Names with a Character-Level RNN] (PT)
-2. [Generating Names with a Character-Level RNN] (PT)
+1. [Classifying names from languages] (PT)
+2. [Generating names from languages] (PT)
 3. [Predicting hand-written number] (TF)
+4. [Generating shakespeares play] (TF)
 
 RNN trains a hidden state (in LSTM trains several gates and cell state) and in each sequence (time step), we use both input and current hidden state to compute the next state. After that, we use a linear network to convey hidden state into output.
 
@@ -133,7 +134,7 @@ Following figures are model structures of RNN, LSTM and Bidirectional-RNN.
 ![](./pics/lstm_structure.jpg)
 ![](./pics/bi_rnn_structure.png)
 
-### Classifying names with a character-level RNN (PT)
+### Classifying names from languages (PT)
 Given a name, we can predict the language used:
 ```python
 $ python predict.py Schmidhuber
@@ -197,8 +198,8 @@ for iter in range(1, n_iters + 1):
 We set batch_size=64. Since a figure is 28\*28, we set seq=28 (each row of a figure) and input_dim=28. In this example, seq_length is fixed while in the above, seq depends on words.
 
 #### Flow:
-2. Input: In each round, 64 figures and their numbers.
-3. [batch=64,seq=28, input_dim=28]-> (`tf.unstack`) 28@[batch=64,input_dim=28] -> hidden: 28@[batch=64, hid_dim=128].
+1. Input: In each round, 64 figures and their numbers.
+2. [batch=64,seq=28, input_dim=28]-> (`tf.unstack`) 28@[batch=64,input_dim=28] -> hidden: 28@[batch=64, hid_dim=128].
 Then we use hidden[-1] to do linear network -> output:[64,10].
 Finally, we use output and number (one hot) to compute loss.
 
@@ -206,3 +207,14 @@ Finally, we use output and number (one hot) to compute loss.
 
 **Note that hidden[-1] is the last time step, which can be regard as information we learnt from all the sequence (28 time steps).**
 
+### Generating shakespeares play (TF)
+
+The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letters). We generate new chars after given the beginning of words.
+
+#### Flow:
+1. Input: (1,25,65). Totally 65 different chars in this novel. Output: (1,25,65), which is input moving forward a letter. eg: `Gaomin` is the input, then `aoming` is the output.
+2. `tf.unstack` to 25@[1,65], then we RNN -> hidden: 25@[1,100].
+3. In each hidden[i], we define linear network (reuse weight for all time step), to get logit: 25@[1,65].
+4. We compute loss of logit: 25@[1,65] and output: 25@[1,65] (sum of all time step).
+5. In train step, we use the current hidden state as the input hidden state in each epic (trained all chars one time), and then clear to 0 in next epic.
+6. For test step, we first give 25 letters. Then each step, we choose the highest prob of the 26th letter. After that, we abandon the first letter and choose 2-26th letters as the input and repeat. We use current hidden state and reuse hidden-output as hidden-input.
