@@ -15,13 +15,55 @@ theta_some = [w1, w2]
 solver = tf.train.AdamOptimizer().minimize(loss, var_list=theta_some)
 ```
 
-In CycleGAN and RNN, we don't define weights ourselves. We use `tf.layers.dense`, `tf.layers.conv2d` for CNN and 
-`tf.nn.rnn_cell` or `tf.nn.static_rnn` for RNN.
+In comparison, in CycleGAN and RNN, we don't define weights ourselves. We use `tf.layers.dense`, `tf.layers.conv2d` for CNN and 
+`tf.nn.rnn_cell` \& `tf.nn.static_rnn` for RNN.
 
 If we want to update a subset of weights, we need to state layers' names.
 
+### Pytorch
+In VAE and GAN (except CycleGAN), we use `torch.zeros` or `torch.randn` to construct weights explicitly. We only use `torch.nn.functional.linear` to define layers, `torch.relu`, `torch.sigmoid` or `torch.softmax` to make activations.
 
+For loss, we use `torch.nn.CrossEntropyLoss` (using `logits`) or `F.binary_cross_entropy` (using `sigmoid(logits)`).
 
+In comparison, in CycleGAN, RNN and CNN, we don't define weights ourselves. We use `torch.nn.Conv2d` \& `torch.nn.MaxPool2d` for CNN, 
+`nn.Linear` for MLP, `nn.RNN` for RNN.
+
+## CNN
+1. [cifar10] (PT)
+2. [spatial_transformer] (PT)
+
+### cifar10:
+In this pytorch official tutorial, we emphasis on `DataLoader`, CNN structure, `torch.no_grad()` in test step and GPU usage.
+
+key code:
+```python
+import torch
+import torchvision
+import torchvision.transforms as transforms
+
+# The output of torchvision datasets are PILImage images of range [0, 1]. We transform them to Tensors of normalized range [-1, 1].
+transform = transforms.Compose( [transforms.ToTensor(),
+                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+# set `num_workers=0` for windows user. Or error: BrokenPipeError: [Errno 32] Broken pipe. See: https://github.com/pytorch/pytorch/issues/2341
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=4, shuffle=True, num_workers=0)
+
+# get some random training images
+dataiter = iter(trainloader)
+images, labels = dataiter.next()
+
+class Net(nn.Module):
+
+net = Net()
+
+# test step
+with torch.no_grad():
+    for data in testloader:
+        images, labels = data
+        outputs = net(images)
+        #...
+```
 ## Variational Autoencoder (VAE)
 1. [Vanilla VAE](https://arxiv.org/abs/1312.6114)
 2. [Conditional VAE](https://arxiv.org/abs/1406.5298)
