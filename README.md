@@ -26,7 +26,7 @@ In VAE and GAN (except CycleGAN), we use `torch.zeros` or `torch.randn` to const
 For loss, we use `torch.nn.CrossEntropyLoss` (using `logits`) or `F.binary_cross_entropy` (using `sigmoid(logits)`).
 
 In comparison, in CycleGAN, RNN and CNN, we don't define weights ourselves. We use `torch.nn.Conv2d` \& `torch.nn.MaxPool2d` for CNN, 
-`nn.Linear` for MLP, `nn.RNN` for RNN.
+`nn.Linear` for MLP, `nn.RNN` for RNN. Here, we can use several Class inherit from `nn.module` and update weights easily.
 
 ## CNN
 1. [cifar10] (PT)
