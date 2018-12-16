@@ -169,6 +169,11 @@ from torchvision import models
 
 model_ft = models.resnet18(pretrained=True)
 num_ftrs = model_ft.fc.in_features
+
+model_ft.fc
+# Linear(in_features=512, out_features=1000, bias=True)
+
+# change the last layer to outfeatures=2 to realize fine tune
 model_ft.fc = nn.Linear(num_ftrs, 2)
 ```
 
