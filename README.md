@@ -91,6 +91,48 @@ with torch.no_grad():
         outputs = net(images)
         #...
 ```
+
+### Spacial Transformer Network (STN):
+
+STN allow a neural network to learn how to perform spatial transformations on the input image in order to enhance the geometric
+invariance of the model.
+
+For example, it can crop a region of interest, scale and correct the orientation of an image. It can be a useful mechanism because CNNs
+are not invariant to rotation and scale and more general affine transformations.
+
+So, if images scale or rotate a lot, CNN can't learn well. Use STN.
+One of the best things about STN is the ability to simply plug it into any existing CNN with very little modification.
+
+#### Flow:
+1. input: x: [64, 1, 28, 28] (figure), label: [64]. batch_size=64.
+2. Spatial transformer localization-network: `xs=localization(x)`: [64, 1, 28, 28] -> [64, 10, 3, 3]. (Conv2d+MaxPool2d+ReLU)*2.
+3. Regressor for the 3 * 2 affine matrix: `theta=fc_loc(xs.view(-1, 10*3*3)).view(-1, 2, 3)`.
+    fc_loc: [64, 10\*3\*3] -> [64, 32\*3\*2]. (Linear+ReLU+Linear).
+4.  grid generator \& sampler: `x = F.grid_sample(x, F.affine_grid(theta, x.size()) )`.
+5. ordinary CNN: `x=CNN(x)`, loss and train step.
+
+One note about Class `nn.module`. If we use `F.dropout` or batchnorm, which acts differently in train and test step, we can do this:
+```python
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        ...
+    def forward(self, x):
+        x = F.dropout(x, training=self.training)
+        ...
+model = Net()
+
+#train
+model.train()
+#update
+
+#test
+with torch.no_grad():
+    model.eval()
+    #test
+```
+
+
 ## Variational Autoencoder (VAE)
 1. [Vanilla VAE](https://arxiv.org/abs/1312.6114)
 2. [Conditional VAE](https://arxiv.org/abs/1406.5298)
