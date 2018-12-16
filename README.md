@@ -100,7 +100,8 @@ invariance of the model.
 For example, it can crop a region of interest, scale and correct the orientation of an image. It can be a useful mechanism because CNNs
 are not invariant to rotation and scale and more general affine transformations.
 
-So, if images scale or rotate a lot, CNN can't learn well. Use STN.
+So, if images scale or rotate a lot, CNN can't learn well. Use STN. STN can not only add accuracy but also use as generative model: we can show figures (sampler) after scaled and rotated.
+
 One of the best things about STN is the ability to simply plug it into any existing CNN with very little modification.
 
 #### Flow:
