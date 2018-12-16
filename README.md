@@ -178,7 +178,7 @@ model_ft.fc = nn.Linear(num_ftrs, 2)
 ```
 
 Third, methods and attributes of class `nn.module`.
-```
+``` python
 model_ft = models.resnet18(pretrained=True)
 # get specific layer's structure
 model_ft.fc
