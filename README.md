@@ -108,7 +108,7 @@ One of the best things about STN is the ability to simply plug it into any exist
 2. Spatial transformer localization-network: `xs=localization(x)`: [64, 1, 28, 28] -> [64, 10, 3, 3]. (Conv2d+MaxPool2d+ReLU)*2.
 3. Regressor for the 3 * 2 affine matrix: `theta=fc_loc(xs.view(-1, 10*3*3)).view(-1, 2, 3)`.
     fc_loc: [64, 10\*3\*3] -> [64, 32\*3\*2]. (Linear+ReLU+Linear).
-4.  grid generator \& sampler: `x = F.grid_sample(x, F.affine_grid(theta, x.size()) )`.
+4.  grid generator \& sampler: `x = F.grid_sample(x, F.affine_grid(theta, x.size()) )`. [64, 32\*3\*2] -> [64, 1, 28, 28].
 5. ordinary CNN: `x=CNN(x)`, loss and train step.
 
 One note about Class `nn.module`. If we use `F.dropout` or batchnorm, which acts differently in train and test step, we can do this:
