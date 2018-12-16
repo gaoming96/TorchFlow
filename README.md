@@ -104,6 +104,10 @@ So, if images scale or rotate a lot, CNN can't learn well. Use STN. STN can not 
 
 One of the best things about STN is the ability to simply plug it into any existing CNN with very little modification.
 
+![](./pics/stn_structure.png)
+
+**We don't know the correct ground truth of the rotation and scaling, we use a NN (localizaiton) to learn and it works well!**
+
 #### Flow:
 1. input: x: [64, 1, 28, 28] (figure), label: [64]. batch_size=64.
 2. Spatial transformer localization-network: `xs=localization(x)`: [64, 1, 28, 28] -> [64, 10, 3, 3]. (Conv2d+MaxPool2d+ReLU)*2.
@@ -111,6 +115,17 @@ One of the best things about STN is the ability to simply plug it into any exist
     fc_loc: [64, 10\*3\*3] -> [64, 32\*3\*2]. (Linear+ReLU+Linear).
 4.  grid generator \& sampler: `x = F.grid_sample(x, F.affine_grid(theta, x.size()) )`. [64, 32\*3\*2] -> [64, 1, 28, 28].
 5. ordinary CNN: `x=CNN(x)`, loss and train step.
+
+We look closer to the structure.
+
+In localization, we have input: [64, 1, 28, 28] (consider [28,28] instead). Each point in figure is a coordinate (x,y)' (1<=x<=28).
+We use affine transformation: (xs,ys)'=[theta; 2\*3 matrix]\*(xt,yt,1)' to represent all the transformation. xt is target (output) while xs is sourse (input).
+
+Now, we learn theta from a NN and we can get coordinate (xt,yt). However, this coordinate is not integer. So we use kernel to represent distance of the non-integer coordinate and all the interger grid coordinate.
+
+![equation](https://latex.codecogs.com/gif.latex?V%20_%20%7B%20i%20%7D%20%5E%20%7B%20c%20%7D%20%3D%20%5Csum%20_%20%7B%20n%20%7D%20%5E%20%7B%20H%20%7D%20%5Csum%20_%20%7B%20m%20%7D%20%5E%20%7B%20W%20%7D%20U%20_%20%7B%20n%20m%20%7D%20%5E%20%7B%20c%20%7D%20%5Cmax%20%5Cleft%28%200%2C1%20-%20%5Cleft%7C%20x%20_%20%7B%20i%20%7D%20%5E%20%7B%20s%20%7D%20-%20m%20%5Cright%7C%20%5Cright%29%20%5Cmax%20%5Cleft%28%200%2C1%20-%20%5Cleft%7C%20y%20_%20%7B%20i%20%7D%20%5E%20%7B%20s%20%7D%20-%20n%20%5Cright%7C%20%5Cright%29)
+
+Here, Umnc is the input at location (m,n) in channel c, Vic is the output at location (xit,yit).
 
 One note about Class `nn.module`. If we use `F.dropout` or batchnorm, which acts differently in train and test step, we can do this:
 ```python
