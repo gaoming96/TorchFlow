@@ -61,7 +61,8 @@ for i, data in enumerate(trainloader):
 
 ## CNN
 1. [cifar10] (PT)
-2. [spatial_transformer] (PT)
+2. [spatial transformer] (PT)
+3. [transfer learning] (PT)
 
 ### cifar10:
 In this pytorch official tutorial, we emphasis on `DataLoader`, CNN structure, `torch.no_grad()` in test step and GPU usage.
@@ -147,7 +148,47 @@ with torch.no_grad():
     model.eval()
     #test
 ```
+### Transfer learning:
+In practice, very few people train an entire Convolutional Network from scratch (with random initialization), because it is relatively rare to have a dataset of sufficient size. Instead, it is common to pretrain a ConvNet on a very large dataset and then use the ConvNet either as an initialization or a fixed feature extractor for the task of interest.
 
+In this tutorial, we focus on:
+
+First, learning rate decay in several round.
+```python
+from torch.optim import lr_scheduler
+
+# Decay LR by a factor of 0.1 every 7 epochs
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+# train step
+for epoch in range(num_epochs):
+    exp_lr_scheduler.step()
+```
+Second, fine tune the model. If we want to fix weights of the upper layers, we can set these weights to `requires_grad=F`.
+```python
+from torchvision import models
+
+model_ft = models.resnet18(pretrained=True)
+num_ftrs = model_ft.fc.in_features
+model_ft.fc = nn.Linear(num_ftrs, 2)
+```
+
+Third, methods and attributes of class `nn.module`.
+```
+model_ft = models.resnet18(pretrained=True)
+# get specific layer's structure
+model_ft.fc
+# get this layer's parameter
+model_ft.fc.in_features
+# get this layer's current weigths
+model_ft.fc.weight
+model_ft.fc.bias
+# get all weights and bias
+list(model_ft.parameters())
+model_ft.state_dict()
+# get training mode or eval mode
+model_ft.training
+# True
+```
 
 ## Variational Autoencoder (VAE)
 1. [Vanilla VAE](https://arxiv.org/abs/1312.6114)
