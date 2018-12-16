@@ -105,7 +105,7 @@ So, if images scale or rotate a lot, CNN can't learn well. Use STN. STN can not 
 
 One of the best things about STN is the ability to simply plug it into any existing CNN with very little modification.
 
-![](./pics/stn_structure.png)
+![](./pics/stn_structure.jpg)
 
 **We don't know the correct ground truth of the rotation and scaling, we use a NN (localizaiton) to learn and it works well!**
 
