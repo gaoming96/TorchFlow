@@ -441,3 +441,34 @@ The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letter
 6. For test step, we first give 25 letters. Then each step, we choose the highest prob of the 26th letter. After that, we abandon the first letter and choose 2-26th letters as the input and repeat. We use current hidden state and reuse hidden-output as hidden-input.
 
 **Note: here seq=25 is fixed. But we can set `seq` to be a `placeholder` to make it changeable in test part.**
+
+## Word Embeddings
+
+In RNN, we introduce the char-level input (every character is encoded into a vector). Now, each word is encoded into a number. We can turn this number into a vector by one-hot encoding, but the vocabulary size is too big and one-hot doesn't have Dristributed representation (mathematical vector property). Hence, we use NN to learn the latent word vector itself (embedding).
+
+We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
+
+1. the text: "the brown quick fox jumped ..."
+2. NGram with context size=2: ([the, brown], quick), ([brown, quick], fox), ...
+3. CBOW with window size=1: ([the, quick], brown), ([brown, fox], quick), ([quick, jumped], fox), ...
+4. Skip-Gram with window size=1: (brown, the), (brown, quick), (quick, brown), (quick, fox), ...
+5. Turn all the words into a number \in[0, voc_size-1]
+
+### NGram (Pytorch)
+We define  `embedding_dim=10`, `batch_size=1`, `context_size=2`. There are totally 97 different words.
+
+1. Input: size=2, eg: [0,2] (represents [the,quick]). Output: size=1.
+2. Dimension flow: 2 -> (`nn.Embedding(97,10)`) [2,10] -> (`view((1, -1))`) [1,20] -> [1, 97] (linear+relu)*2.
+3. Ordinary Crossentrophy Loss.
+
+```python
+embedding = nn.Embedding(10, 3)
+input = torch.LongTensor([[1,2,4,5],[4,3,2,9]])
+# torch.Size([2, 4])
+embedding(input).size()
+# torch.Size([2, 4, 3])
+```
+
+
+
+
