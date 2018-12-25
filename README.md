@@ -537,5 +537,9 @@ Dim flow:
 1. input: [4] (if there are 4 words in this sentence) -> (`nn.Embedding(9,6)`) [4,6] -> (`view`) [4,1,6] (batch=1,seq=4)
 2. LSTM layer: -> (`nn.LSTM(6,16)`) [4,1,16] -> (`view(4,-1)`) [4,16] -> [4,3]
 3. Ordinary loss, with desired output: [4] -> (onehot) [4,3]
-4. Hidden state is updating each round, and clear to 0 each eopch
+4. Hidden state is updating each round, and clear to 0 each epoch
+
+AUGMENTING THE LSTM PART-OF-SPEECH TAGGER WITH CHARACTER-LEVEL FEATURES
+
+In the example above, each word had an embedding, which served as the inputs to our sequence model. Let’s augment the word embeddings with a representation derived from the characters of the word. We expect that this should help significantly, since character-level information like affixes have a large bearing on part-of-speech. For example, words with the affix -ly are almost always tagged as adverbs in English. See: https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html#sphx-glr-beginner-nlp-sequence-models-tutorial-py
 
