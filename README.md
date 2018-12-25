@@ -363,6 +363,8 @@ for iter in range(1, n_iters + 1):
     category, line, category_tensor, line_tensor = randomTrainingExample()
     optimizer.zero_grad()
     output = rnn(line_tensor)
+    # line_tensor shape:(seq_len, batch, input_size); output shape:  (seq_len, batch, output_size)
+    
     loss = criterion(output, category_tensor)
     loss.backward()
     optimizer.step()
