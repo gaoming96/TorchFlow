@@ -448,18 +448,26 @@ In RNN, we introduce the char-level input (every character is encoded into a vec
 
 We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
 
+Also, since vocabulary size is too big, using ordinary softmax (MLP) costs time. We introduce hierarchy tree and negative sampling to solve the problem.
+
+### NGram (PT)
+We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
+
 1. the text: "the brown quick fox jumped ..."
 2. NGram with context size=2: ([the, brown], quick), ([brown, quick], fox), ...
-3. CBOW with window size=1: ([the, quick], brown), ([brown, fox], quick), ([quick, jumped], fox), ...
-4. Skip-Gram with window size=1: (brown, the), (brown, quick), (quick, brown), (quick, fox), ...
-5. Turn all the words into a number \in[0, voc_size-1]
+3. CBOW with window size=1: ([the, quick], brown), ([brown, fox], quick), ([quick, jumped], fox), ... Learn word from context
+4. Skip-Gram with window size=1: (brown, the), (brown, quick), (quick, brown), (quick, fox), ... Learn context from word
+5. Turn all the words into a number \in [0, voc_size-1]
 
-### NGram (Pytorch)
 We define  `embedding_dim=10`, `batch_size=1`, `context_size=2`. There are totally 97 different words.
 
 1. Input: size=2, eg: [0,2] (represents [the,quick]). Output: size=1.
 2. Dimension flow: 2 -> (`nn.Embedding(97,10)`) [2,10] -> (`view((1, -1))`) [1,20] -> [1, 97] (linear+relu)*2.
 3. Ordinary Crossentrophy Loss.
+
+Here, `nn.Embedding(97,10)` has learnable parameter size=[97,10] to represent the embedding: from 97 to 10. Since input contex=2 (2 words), we choose these 2 words from 97 words, hence we get [2,10].
+
+Key code for embedding:
 
 ```python
 embedding = nn.Embedding(10, 3)
@@ -469,6 +477,42 @@ embedding(input).size()
 # torch.Size([2, 4, 3])
 ```
 
+After the model is learned, we can add following words. Also, the embedding matrix [97,10] learns some semantic meanings.
 
+### Skip-gram with negative sample (TF)
+Since vocabulary size is too big, using ordinary softmax (MLP) costs time. We introduce hierarchy tree and negative sampling to solve the problem.
 
+Here, we use Skip-gram with size=1. Embed_size=2 (for better visualization). batch_size=20. num_sample=15 (number of negative examples). There are totally voc_size=35 different words.
+Flow:
 
+1. Input: [batch], output: [batch,1]. eg: x=[2,10,0], y=[[1],[11],[30]] if batch=3.
+2. Compute NCE loss and update.
+
+embeddings:[35,2], embed:[batch,2] (the same as PT before). NCE loss is binary logistic regression of 1 true and 15 false obervations.
+
+Key code:
+
+```python
+x = tf.placeholder(tf.int32, shape=[batch_size])
+y = tf.placeholder(tf.int32, shape=[batch_size, 1])
+
+embeddings = tf.Variable(tf.random_uniform([voc_size, embedding_size], -1.0, 1.0))
+embed = tf.nn.embedding_lookup(embeddings, x) # lookup table
+
+# Construct the variables for the NCE loss
+nce_weights = tf.Variable(tf.random_uniform([voc_size, embedding_size],-1.0, 1.0))
+nce_biases = tf.Variable(tf.zeros([voc_size]))
+
+loss = tf.reduce_mean(tf.nn.nce_loss(nce_weights, nce_biases, y, embed, num_sampled, voc_size))
+
+train_op = tf.train.AdamOptimizer(1e-1).minimize(loss)
+
+with tf.Session() as sess:
+    tf.global_variables_initializer().run()
+    for step in range(100):
+        _, loss_val = sess.run([train_op, loss], feed_dict={x: batch_inputs, y: batch_labels})
+    trained_embeddings = embeddings.eval()
+
+# every word is a point in the embed figure
+plot(trained_embeddings) 
+```
