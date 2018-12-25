@@ -448,9 +448,15 @@ The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letter
 
 In RNN, we introduce the char-level input (every character is encoded into a vector). Now, each word is encoded into a number. We can turn this number into a vector by one-hot encoding, but the vocabulary size is too big and one-hot doesn't have Dristributed representation (mathematical vector property). Hence, we use NN to learn the latent word vector itself (embedding).
 
+1. NGram (PT)
+2. Skip-gram with negative sample (TF)
+3. tag_word (PT)
+
 We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
 
 Also, since vocabulary size is too big, using ordinary softmax (MLP) costs time. We introduce hierarchy tree and negative sampling to solve the problem.
+
+In the third tutorial, we combine word embedding with LSTM model. Always, we use word embdding as the first layer.
 
 ### NGram (PT)
 We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
@@ -518,3 +524,18 @@ with tf.Session() as sess:
 # every word is a point in the embed figure
 plot(trained_embeddings) 
 ```
+
+### tag_word (PT)
+
+Each sample of input is a sentence and its words' tags. eg: `("Everybody read that book".split(), ["NN", "V", "DET", "NN"])`.
+We turn into numbers: `(tensor([5, 6, 7, 8]), tensor([1, 2, 0, 1]))`.
+
+We set EMBEDDING_DIM = 6, HIDDEN_DIM = 16, vocab_size=9 (total 9 words), tagset_size=3 (total 3 tags), 
+
+Dim flow:
+
+1. input: [4] (if there are 4 words in this sentence) -> (`nn.Embedding(9,6)`) [4,6] -> (`view`) [4,1,6] (batch=1,seq=4)
+2. LSTM layer: -> (`nn.LSTM(6,16)`) [4,1,16] -> (`view(4,-1)`) [4,16] -> [4,3]
+3. Ordinary loss, with desired output: [4] -> (onehot) [4,3]
+4. Hidden state is updating each round, and clear to 0 each eopch
+
