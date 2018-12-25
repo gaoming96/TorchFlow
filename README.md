@@ -472,10 +472,10 @@ We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
 We define  `embedding_dim=10`, `batch_size=1`, `context_size=2`. There are totally 97 different words.
 
 1. Input: size=2, eg: [0,2] (represents [the,quick]). Output: size=1.
-2. Dimension flow: 2 -> (`nn.Embedding(97,10)`) [2,10] -> (`view((1, -1))`) [1,20] -> [1, 97] (linear+relu)*2.
+2. Dimension flow: [2] -> (`nn.Embedding(97,10)`) [2,10] -> (`view((1, -1))`) [1,20] -> [1, 97] (linear+relu)*2.
 3. Ordinary Crossentrophy Loss.
 
-Here, `nn.Embedding(97,10)` has learnable parameter size=[97,10] to represent the embedding: from 97 to 10. Since input contex=2 (2 words), we choose these 2 words from 97 words, hence we get [2,10].
+Here, `nn.Embedding(97,10)` has learnable parameter size=[97,10] to represent the embedding: from 97 to 10. Since input contex=2 (2 words), we choose these 2 words from 97 words, hence we get [2,10]. Actually, we can regard [2] as [2,97] if we onehot it. Thus, embedding just embed [2,97] into [2,10].
 
 Key code for embedding:
 
