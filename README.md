@@ -292,6 +292,8 @@ Exemplar results on testset: horse -> zebra
 
 RNN trains a hidden state (in LSTM trains several gates and cell state) and in each sequence (time step), we use both input and current hidden state to compute the next state. After that, we use a linear network to convey hidden state into output.
 
+**The difference between RNN and MLP is that it is dependent between sequence (time step).**
+
 In the first and third examples, we see that RNN can also make **prediction**. We can predict a category after reading in all the letters of a name, and use the last time step (sequence) output to calculate cross-entrophy loss.
 
 We need to sum the loss of each sequence in example 2 & 4, which is more commplicated and different from above examples.
