@@ -453,6 +453,7 @@ In RNN, we introduce the char-level input (every character is encoded into a vec
 1. NGram (PT)
 2. Skip-gram with negative sample (TF)
 3. tag_word (PT)
+4. seq2seq translation (PT)
 
 We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
 
@@ -544,4 +545,29 @@ Dim flow:
 AUGMENTING THE LSTM PART-OF-SPEECH TAGGER WITH CHARACTER-LEVEL FEATURES
 
 In the example above, each word had an embedding, which served as the inputs to our sequence model. Let’s augment the word embeddings with a representation derived from the characters of the word. We expect that this should help significantly, since character-level information like affixes have a large bearing on part-of-speech. For example, words with the affix -ly are almost always tagged as adverbs in English. See: https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html#sphx-glr-beginner-nlp-sequence-models-tutorial-py
+
+### Seq2seq translation (PT)
+
+In this project we will be teaching a neural network to translate from French to English. An encoder network condenses an input sequence into a vector, and a decoder network unfolds that vector into a new sequence.
+
+Consider the sentence “Je ne suis pas le chat noir” → “I am not the black cat”. The words are in different order and different numbers of words, thus using ordinary one RNN is hard.
+
+#### Data Preprocessing
+
+1. Read text file and split into lines, split lines into pairs
+2. Normalize text, filter by length of words < 10 (no more than 10 words in one sentence; else hard to learn), delete pairs which contain words' occurance less than 3 times
+3. We get list: `pairs`. eg: pairs[100]=['je pars .', 'i m going .']
+4. Turn into tensor. eg: input sentence: [[ 6],[88],[ 5],[ 1]] (dim=[4,1]); output sentence: [[ 2],[ 3],[61],[ 4],[ 1]] (dim=[5,1]). 
+The last word of every sentence is EOS, encoded as [1]. (In each language, we encode every word into a number. eg: ['je', 'pars', '.', 'EOS']).
+
+#### Dimension Flow
+
+batch=1. seq changes every sentence. If 'je pars .' then seq=4. hidden_size = 256. input_lang.n_words=4489 (total 4489 different words in input language french). output_lang.n_words=2295.
+
+1. Encoder: input [seq,1]. Each time use one of seq, [1] -> (`Embedding(4489,256)`) [1,256] -> (view) [1,1,256] -> (`GRU(256,256)`) 
+hidden [1,1,256], state [1,1,256]. Recurrently use state. Save to output [seq,256] (`output[i]=hidden[0,0]`).
+1. Encoder: input [seq](a sentence) -> (`Embedding(4489,256)`) [seq,256] -> (view) [seq,1,256] -> (`GRU(256,256)`) 
+output [seq,1,256], state [1,1,256]. Add 0 to turn output: [10,256] (max_length=10).
+2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS)
+
 
