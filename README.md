@@ -585,7 +585,7 @@ output [1,1,256], state [1,1,256]; output [1,1,256] -> (view) [1,256] -> (linear
 3. Attension_weight: concate embedded [1,256] and state [1,256] into [1,512] -> (linear+softmax) [1,10].
 4. Attension_applied: torch.bmm(attn_weights.unsqueeze(0) [1,1,10], encoder_outputs.unsqueeze(0) [1,10,256]) -> [1,1,256] (`bmm` is batch matrix-matrix product).
 5. Output1: concate embedded [1,256] and attension_applied [1,256] into [1,512] -> (linear+relu) [1,256].
-6. Output: output1 [1,256] -> (view+`gru(256,256)`) output [1,1,256] -> (view+softmax) [1,2295].
+6. Output: output1 [1,256] -> (view+`gru(256,256)`) output [1,1,256] -> (view+softmax) [1,2295]. The initial hidden state of GRU is the last hidden state of the encoder.
 
 #### Model structure
 
