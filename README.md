@@ -562,7 +562,7 @@ The last word of every sentence is EOS, encoded as [1]. (In each language, we en
 
 #### Dimension Flow
 
-batch=1. seq changes every sentence. If 'je pars .' then seq=4. hidden_size = 256. input_lang.n_words=4489 (total 4489 different words in input language french). output_lang.n_words=2295.
+batch=1. seq changes every sentence. If 'je pars .' then seq=4 (seperate by ' ' and add EOS). hidden_size = 256. input_lang.n_words=4489 (total 4489 different words in input language french). output_lang.n_words=2295.
 
 ##### Simplest seq2seq
 
@@ -574,21 +574,35 @@ It is **wierd** why the orignial Pytorch tutorial[https://pytorch.org/tutorials/
 1. Encoder: input [seq](a sentence) -> (`Embedding(4489,256)`) [seq,256] -> (view) [seq,1,256] -> (`GRU(256,256)`) 
 output [seq,1,256], state [1,1,256].
 2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS) -> (`Embedding(2295,256)`) [1,256] -> (view) [1,1,256] -> (`GRU(256,256)`) 
-output [1,1,256], state [1,1,256]. output [1,1,256] -> (view) [1,256] -> (linear+softmax) [1,2295].
+output [1,1,256], state [1,1,256]; output [1,1,256] -> (view) [1,256] -> (linear+softmax) [1,2295].
 3. In encoder-decoder, the encoder_state is of no use but the encoder_output[-1] is used as initial decoder_state. The last encoder_output is called **context vector** as it encodes context from the entire sequence.
 4. Now since initial decoder_state contains information of input_language, we could use decoder to get output sequentially.
 
 ##### Attention seq2seq
 
-If only the context vector is passed betweeen the encoder and decoder, that single vector carries the burden of encoding the entire sentence.
-
 1. Encoder: the same as before, output [seq,1,256]. View and add 0 to turn output: [10,256] (max_length=10).
 2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS) -> (`Embedding(2295,256)`) [1,256]. Denote as embedded.
 3. Attension_weight: concate embedded [1,256] and state [1,256] into [1,512] -> (linear+softmax) [1,10].
 4. Attension_applied: torch.bmm(attn_weights.unsqueeze(0) [1,1,10], encoder_outputs.unsqueeze(0) [1,10,256]) -> [1,1,256] (`bmm` is batch matrix-matrix product).
-5. Output1: concate embedded [1,256] and Attension_applied [1,256] into [1,512] -> (linear+relu) [1,256].
-5. Output: output1 [1,256] -> (view+`gru(256,256)`) output [1,1,256] -> (view+softmax) [1,2295].
+5. Output1: concate embedded [1,256] and attension_applied [1,256] into [1,512] -> (linear+relu) [1,256].
+6. Output: output1 [1,256] -> (view+`gru(256,256)`) output [1,1,256] -> (view+softmax) [1,2295].
 
-6. 
+#### Model structure
+
+
+
+#### Why it works?
+
+simple: First embed `input` to `embeded`. Use `embeded` and `hidden state` (initial at `encoder_output[-1]`) to do GRU. Then predict.
+
+Flaw of simple Seq2seq: if only the context vector is passed betweeen the encoder and decoder, that single vector carries the burden of encoding the entire sentence.
+
+Attension: First embed `input` to `embeded`. Then we use `embeded` and `hidden state` to get `attention_weights` [1,10], which is the weights of `encoder_outputs` [10,256]. We multiple them to realize **focus** on paticular sequence. Denote as `attension_applied`.
+
+Concate `embeded` with `attension_applied`. After this, we do the same GRU procedure with `hidden state` as simple seq2seq.
+
+It gives me an inspiration: **First we determine input and the meaning of output. Then we just do Linear to realize it automatically. If there are several inputs, we concate them. If the dimension is not comply, we use Linear.** Quite strong and unreasonable.
+
+
 
 
