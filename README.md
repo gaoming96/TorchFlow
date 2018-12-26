@@ -564,10 +564,31 @@ The last word of every sentence is EOS, encoded as [1]. (In each language, we en
 
 batch=1. seq changes every sentence. If 'je pars .' then seq=4. hidden_size = 256. input_lang.n_words=4489 (total 4489 different words in input language french). output_lang.n_words=2295.
 
+##### Simplest seq2seq
+
 1. Encoder: input [seq,1]. Each time use one of seq, [1] -> (`Embedding(4489,256)`) [1,256] -> (view) [1,1,256] -> (`GRU(256,256)`) 
-hidden [1,1,256], state [1,1,256]. Recurrently use state. Save to output [seq,256] (`output[i]=hidden[0,0]`).
+output [1,1,256], state [1,1,256]. Recurrently use state. Save to output [seq,256] (`output[i]=hidden[0,0]`).
+
+It is **wierd** why the orignial Pytorch tutorial[https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html] use for loop each time of the seq. I think we can combine them together in below: 
+
 1. Encoder: input [seq](a sentence) -> (`Embedding(4489,256)`) [seq,256] -> (view) [seq,1,256] -> (`GRU(256,256)`) 
-output [seq,1,256], state [1,1,256]. Add 0 to turn output: [10,256] (max_length=10).
-2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS)
+output [seq,1,256], state [1,1,256].
+2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS) -> (`Embedding(2295,256)`) [1,256] -> (view) [1,1,256] -> (`GRU(256,256)`) 
+output [1,1,256], state [1,1,256]. output [1,1,256] -> (view) [1,256] -> (linear+softmax) [1,2295].
+3. In encoder-decoder, the encoder_state is of no use but the encoder_output[-1] is used as initial decoder_state. The last encoder_output is called **context vector** as it encodes context from the entire sequence.
+4. Now since initial decoder_state contains information of input_language, we could use decoder to get output sequentially.
+
+##### Attention seq2seq
+
+If only the context vector is passed betweeen the encoder and decoder, that single vector carries the burden of encoding the entire sentence.
+
+1. Encoder: the same as before, output [seq,1,256]. View and add 0 to turn output: [10,256] (max_length=10).
+2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS) -> (`Embedding(2295,256)`) [1,256]. Denote as embedded.
+3. Attension_weight: concate embedded [1,256] and state [1,256] into [1,512] -> (linear+softmax) [1,10].
+4. Attension_applied: torch.bmm(attn_weights.unsqueeze(0) [1,1,10], encoder_outputs.unsqueeze(0) [1,10,256]) -> [1,1,256] (`bmm` is batch matrix-matrix product).
+5. Output1: concate embedded [1,256] and Attension_applied [1,256] into [1,512] -> (linear+relu) [1,256].
+5. Output: output1 [1,256] -> (view+`gru(256,256)`) output [1,1,256] -> (view+softmax) [1,2295].
+
+6. 
 
 
