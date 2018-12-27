@@ -605,6 +605,24 @@ How to get the weight [1,10] of multiplication? We use `embeded` and `hidden sta
 
 It gives me an inspiration: **First we determine input and the meaning of output. Then we just do Linear to realize it automatically. If there are several inputs, we concate them. If the dimension is not comply, we use Linear.** Quite strong and unreasonable.
 
+#### LOSS
 
+We know the target tensor (a sentence) and its length. Then we can run decoder target_length times, each time we can use NegativeLL to compute this current target word.
 
+We can set to use Teacher forcing or not. “Teacher forcing” is the concept of using the real target outputs as each next input, instead of using the decoder’s guess as the next input. Using teacher forcing causes it to converge faster but when the trained network is exploited, it may exhibit instability.
 
+```python
+if not use_teacher_forcing:
+    for di in range(target_length):
+        decoder_output, decoder_hidden = decoder(decoder_input, decoder_hidden, encoder_outputs)
+        topv, topi = decoder_output.topk(1)
+        decoder_input = topi.squeeze().detach()  # detach from history as input
+
+        loss += criterion(decoder_output, target_tensor[di])
+        if decoder_input.item() == EOS_token:
+            break
+```
+
+#### Evaluation
+
+This time, we know nothing about target length. Thus, we do for loop for max_length (10) times. If current highest prob is EOS, we break.
