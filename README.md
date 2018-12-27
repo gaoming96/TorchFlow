@@ -569,7 +569,7 @@ batch=1. seq changes every sentence. If 'je pars .' then seq=4 (seperate by ' ' 
 1. Encoder: input [seq,1]. Each time use one of seq, [1] -> (`Embedding(4489,256)`) [1,256] -> (view) [1,1,256] -> (`GRU(256,256)`) 
 output [1,1,256], state [1,1,256]. Recurrently use state. Save to output [seq,256] (`output[i]=hidden[0,0]`).
 
-It is **wierd** why the orignial Pytorch tutorial[https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html] use for loop each time of the seq. I think we can combine them together in below: 
+It is **wierd** why the orignial [Pytorch tutorial](https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html) use for loop each time of the seq. I think we can combine them together in below: 
 
 1. Encoder: input [seq](a sentence) -> (`Embedding(4489,256)`) [seq,256] -> (view) [seq,1,256] -> (`GRU(256,256)`) 
 output [seq,1,256], state [1,1,256].
@@ -589,7 +589,8 @@ output [1,1,256], state [1,1,256]; output [1,1,256] -> (view) [1,256] -> (linear
 
 #### Model structure
 
-
+![](./pics/seq2seq1.jpg)
+![](./pics/seq2seq2.jpg)
 
 #### Why it works?
 
@@ -626,3 +627,11 @@ if not use_teacher_forcing:
 #### Evaluation
 
 This time, we know nothing about target length. Thus, we do for loop for max_length (10) times. If current highest prob is EOS, we break.
+
+After we guess the current Eng word as the highest prob, we also get attension (vector of length 10), which is the focus (weight) of the given Fren sentence (total max 10 words). It is interpretable and we may show it as a matrix after guessing all the Eng sentence.
+
+#### What's more
+
+1. Other datasets: Chat → Response, Question → Answer
+2. Replace the embeddings with pre-trained word embeddings such as word2vec or GloVe
+
