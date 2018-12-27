@@ -593,13 +593,15 @@ output [1,1,256], state [1,1,256]; output [1,1,256] -> (view) [1,256] -> (linear
 
 #### Why it works?
 
-simple: First embed `input` to `embeded`. Use `embeded` and `hidden state` (initial at `encoder_output[-1]`) to do GRU. Then predict.
+simple: First embed `input` to `embeded` [1,256]. Use `embeded` and `hidden state` (initial at `encoder_output[-1]`) to do GRU. Then predict.
 
 Flaw of simple Seq2seq: if only the context vector is passed betweeen the encoder and decoder, that single vector carries the burden of encoding the entire sentence.
 
-Attension: First embed `input` to `embeded`. Then we use `embeded` and `hidden state` to get `attention_weights` [1,10], which is the weights of `encoder_outputs` [10,256]. We multiple them to realize **focus** on paticular sequence. Denote as `attension_applied`.
+Attension: First embed `input` to `embeded`. Then we want to use both `embeded` [1,256] and `encoder_outputs` [10,256] as the input of GRU. After this, we do the same GRU procedure with `hidden state` as simple seq2seq.
 
-Concate `embeded` with `attension_applied`. After this, we do the same GRU procedure with `hidden state` as simple seq2seq.
+However, encoder_outputs [10,256] is sequence of 10, thus we do multiplication to turn into `attension_applied` [1,256].
+
+How to get the weight [1,10] of multiplication? We use `embeded` and `hidden state` to get `attention_weights` [1,10], which is the weights of `encoder_outputs` [10,256].
 
 It gives me an inspiration: **First we determine input and the meaning of output. Then we just do Linear to realize it automatically. If there are several inputs, we concate them. If the dimension is not comply, we use Linear.** Quite strong and unreasonable.
 
