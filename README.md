@@ -550,7 +550,7 @@ In the example above, each word had an embedding, which served as the inputs to 
 
 In this project we will be teaching a neural network to translate from French to English. An encoder network condenses an input sequence into a vector, and a decoder network unfolds that vector into a new sequence.
 
-Consider the sentence “Je ne suis pas le chat noir” → “I am not the black cat”. The words are in different order and different numbers of words, thus using ordinary one RNN is hard.
+**Consider the sentence “Je ne suis pas le chat noir” → “I am not the black cat”. The words are in different order and different numbers of words, thus using ordinary one RNN is hard.**
 
 #### Data Preprocessing
 
