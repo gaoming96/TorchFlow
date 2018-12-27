@@ -590,6 +590,9 @@ output [1,1,256], state [1,1,256]; output [1,1,256] -> (view) [1,256] -> (linear
 #### Model structure
 
 ![](./pics/seq2seq1.jpg)
+
+The above figures are model and encoder. The below figures are decoders.
+
 ![](./pics/seq2seq2.jpg)
 
 #### Why it works?
