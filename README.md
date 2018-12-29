@@ -454,6 +454,7 @@ In RNN, we introduce the char-level input (every character is encoded into a vec
 2. Skip-gram with negative sample (TF)
 3. tag_word (PT)
 4. seq2seq translation (PT)
+5. chatbot (PT)
 
 We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
 
@@ -637,4 +638,55 @@ After we guess the current Eng word as the highest prob, we also get attension (
 
 1. Other datasets: Chat → Response, Question → Answer
 2. Replace the embeddings with pre-trained word embeddings such as word2vec or GloVe
+
+
+
+### Chatbot (PT)
+
+We will train a simple chatbot using movie scripts from the Cornell Movie-Dialogs Corpus.
+
+#### Data preprocessing
+
+1. Read in movie scripts, seperate into sentences (Q & A), encode every words into numbers and trim words which occur less than 10 times.
+2. Turn into tensor. Add EOS_token = 2.
+3. This time, we use batch. However, since every sentence has different length, we padding 0 after EOS to make them the same length (set MAX_LENGTH = 10).
+4. We add a `mask` tensor. The binary mask tensor has the same shape as the output target tensor, but every element that is a PAD_token is 0 and all others are 1. `mask=output!=0`.
+
+Example1:
+
+pairs[0]=['there .', 'where ?']
+
+input:  batch2TrainData(voc, [pairs[0]])[0]=
+tensor([[3],
+        [4],
+        [2]])
+because EOS_token = 2
+
+output: batch2TrainData(voc, [pairs[0]])[2]=
+tensor([[5],
+        [6],
+        [2]])
+
+mask: batch2TrainData(voc, [pairs[0]])[3]=
+tensor([[1],
+        [1],
+        [1]])
+
+Example2:
+
+p=[pairs[0],pairs[1]]=[['there .', 'where ?'], ['you have my word . as a gentleman', 'you re sweet .']]
+
+input: torch.Size([9, 2]); output: torch.Size([5, 2]); mask: torch.Size([5, 2])
+
+output=tensor([[ 7,  5],
+
+        [14,  6],
+        
+        [15,  2],
+        
+        [ 4,  0],
+        
+        [ 2,  0]])
+  
+Thus, input & output: [seq,batch]. We fix batch_size=64. `seq` varies from every input & output. `seq` is the max length of words in this batch of setences and `seq` <=10.
 
