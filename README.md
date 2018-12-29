@@ -709,6 +709,10 @@ There are two differences between chatbot tutorial and translation tutorial.
 2. **Local attention**. Translation's attension_weight is calculated by embedded (rnn_output) and hidden_state: concate them and Linear to [seq].
 3. **Global attention**. Chatbot's attension_weight is calculated by embedded (rnn_output) and encoder_outputs: dot/concate+Linear.
 
+Model structure:
+
+![](./pics/chatbot_structure.jpg)
+
 #### Loss
 
  Loss function calculates the average negative log likelihood of the elements that correspond to a 1 in the mask tensor.
