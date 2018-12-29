@@ -711,7 +711,15 @@ There are two differences between chatbot tutorial and translation tutorial.
 
 Model structure:
 
+Here, blue box is the embedded input_sentence while red box is the embedded desired_output_word. We use both of the embedded to get global weight. Then it is the same as seq2seq translation: we bmm weight and embedded input_sentence to get attention (context). Concate context with embedded desired_output_word and Linear+softmax to probability.
+
+Note: although there are two red box shown, each time we just use one box (one word).
+
 ![](./pics/chatbot_structure.jpg)
+
+As a comparison, I plot local attention:
+
+![](./pics/chatbot_structure_1.png)
 
 #### Loss
 
