@@ -714,3 +714,48 @@ There are two differences between chatbot tutorial and translation tutorial.
  Loss function calculates the average negative log likelihood of the elements that correspond to a 1 in the mask tensor.
  
  In order to converge, we do several tricks: using teacher forcing; gradient clipping.
+ 
+ #### Save & load model
+ 
+ Saving model:
+ 
+ ```python
+ encoder = EncoderRNN()
+decoder = LuongAttnDecoderRNN()
+
+# Save checkpoint
+if (iteration % 1000 == 0):
+    directory = os.path.join(save_dir, model_name, '{}-{}'.format(encoder_n_layers, decoder_n_layers))
+    if not os.path.exists(directory): os.makedirs(directory)
+    torch.save({
+        'iteration': iteration,
+        'en': encoder.state_dict(),
+        'de': decoder.state_dict(),
+        'en_opt': encoder_optimizer.state_dict(),
+        'de_opt': decoder_optimizer.state_dict(),
+        'loss': loss,
+        'embedding': embedding.state_dict()
+    }, os.path.join(directory, '{}_{}.tar'.format(iteration, 'checkpoint')))    
+ ```
+
+We can load model in another py file. We can train from then on or test our model.
+
+```python
+# Use checkpoint from 4000 iteration
+checkpoint_iter = 4000
+loadFilename = os.path.join(directory,'{}_checkpoint.tar'.format(checkpoint_iter))
+checkpoint = torch.load(loadFilename)
+# If loading a model trained on GPU to CPU
+#checkpoint = torch.load(loadFilename, map_location=torch.device('cpu'))
+encoder_sd = checkpoint['en']
+encoder_optimizer_sd = checkpoint['en_opt']
+
+
+encoder = EncoderRNN()
+encoder.load_state_dict(encoder_sd)
+#encoder = encoder.to(device)
+encoder_optimizer = optim.Adam(encoder.parameters(), lr=learning_rate)
+encoder_optimizer.load_state_dict(encoder_optimizer_sd)
+
+# train or test as usual
+```
