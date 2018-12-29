@@ -576,7 +576,7 @@ It is **wierd** why the orignial [Pytorch tutorial](https://pytorch.org/tutorial
 output [seq,1,256], state [1,1,256].
 2. Decoder: input [1,1] (exactly tensor([[0]]), which is SOS) -> (`Embedding(2295,256)`) [1,256] -> (view) [1,1,256] -> (`GRU(256,256)`) 
 output [1,1,256], state [1,1,256]; output [1,1,256] -> (view) [1,256] -> (linear+softmax) [1,2295].
-3. In encoder-decoder, the encoder_state is of no use but the encoder_output[-1] is used as initial decoder_state. The last encoder_output is called **context vector** as it encodes context from the entire sequence.
+3. In encoder-decoder, the encoder_output is of no use but the encoder_state is used as initial decoder_state. It is called **context vector** as it encodes context from the entire sequence.
 4. Now since initial decoder_state contains information of input_language, we could use decoder to get output sequentially.
 
 ##### Attention seq2seq
@@ -598,9 +598,11 @@ The above figures are model and encoder. The below figures are decoders.
 
 #### Why it works?
 
-simple: First embed `input` to `embeded` [1,256]. Use `embeded` and `hidden state` (initial at `encoder_output[-1]`) to do GRU. Then predict.
+Encoder step is the same.
 
-Flaw of simple Seq2seq: if only the context vector is passed betweeen the encoder and decoder, that single vector carries the burden of encoding the entire sentence.
+simple: First embed `input` to `embeded` [1,256]. Use `embeded` and `hidden state` (initial at encoder's last hidden state) to do GRU. Then predict.
+
+Flaw of simple Seq2seq: if only the context vector is passed betweeen the encoder and decoder, that single vector carries the burden of encoding the entire sentence. Loss information.
 
 Attension: First embed `input` to `embeded`. Then we want to use both `embeded` [1,256] and `encoder_outputs` [10,256] as the input of GRU. After this, we do the same GRU procedure with `hidden state` as simple seq2seq.
 
@@ -692,3 +694,23 @@ output=tensor(
   
 Thus, input & output: [seq,batch]. We fix batch_size=64. `seq` varies from every input & output. `seq` is the max length of words in this batch of setences and `seq` <=10.
 
+#### Dimension flow
+
+1. Input: input [seq,batch], hidden_state [2,batch,hidden] (bidirection GRU).
+2. Encoder: input [seq,batch] -> (`embedding`) [seq,batch,hidden] -> (GRU) [seq,batch,2\*hidden] -> (sum) encoder_output [seq,batch,hidden], hidden_state.
+3. Decoder: input [1,batch] (exactly SOS) -> (`embedding`) [1,batch,hidden] -> (GRU) rnn_output [1,batch,hidden].
+4. Attn_weights: `gloab_attn(rnn_output, encoder_outputs)` [seq,batch] (is the weights of each word).
+5. Attension_applied: `torch.bmm(attn_weights, encoder_outputs.transpose(0, 1))`  [batch,hidden].
+6. Output1: concate rnn_output [batch,hidden] and attension_applied [batch,hidden] into [batch,2\*hidden] -> (linear+tanh) [batch,hidden] -> (linear+softmax) [batch,vocab].
+
+There are two differences between chatbot tutorial and translation tutorial.
+
+1. In translation, we do decoder's GRU at last, while in chatbot we do GRU just after embedded.
+2. **Local attention**. Translation's attension_weight is calculated by embedded (rnn_output) and hidden_state: concate them and Linear to [seq].
+3. **Global attention**. Chatbot's attension_weight is calculated by embedded (rnn_output) and encoder_outputs: dot/concate+Linear.
+
+#### Loss
+
+ Loss function calculates the average negative log likelihood of the elements that correspond to a 1 in the mask tensor.
+ 
+ In order to converge, we do several tricks: using teacher forcing; gradient clipping.
