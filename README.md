@@ -719,7 +719,7 @@ Note: although there are two red box shown, each time we just use one box (one w
 
 As a comparison, I plot local attention:
 
-![](./pics/chatbot_structure_1.png)
+![](./pics/local_attention.png)
 
 #### Loss
 
