@@ -697,7 +697,7 @@ Thus, input & output: [seq,batch]. We fix batch_size=64. `seq` varies from every
 #### Dimension flow
 
 1. Input: input [seq,batch], hidden_state [2,batch,hidden] (bidirection GRU).
-2. Encoder: input [seq,batch] -> (`embedding`) [seq,batch,hidden] -> (GRU) [seq,batch,2\*hidden] -> (sum) encoder_output [seq,batch,hidden], hidden_state.
+2. Encoder: input [seq,batch] -> (`embedding`) [seq,batch,hidden] -> (biGRU) [seq,batch,2\*hidden] -> (sum) encoder_output [seq,batch,hidden], hidden_state.
 3. Decoder: input [1,batch] (exactly SOS) -> (`embedding`) [1,batch,hidden] -> (GRU) rnn_output [1,batch,hidden].
 4. Attn_weights: `gloab_attn(rnn_output, encoder_outputs)` [seq,batch] (is the weights of each word).
 5. Attension_applied: `torch.bmm(attn_weights, encoder_outputs.transpose(0, 1))`  [batch,hidden].
