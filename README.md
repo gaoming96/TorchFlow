@@ -678,7 +678,9 @@ p=[pairs[0],pairs[1]]=[['there .', 'where ?'], ['you have my word . as a gentlem
 
 input: torch.Size([9, 2]); output: torch.Size([5, 2]); mask: torch.Size([5, 2])
 
-output=tensor([[ 7,  5],
+output=tensor(
+
+       [[ 7,  5],
 
         [14,  6],
         
