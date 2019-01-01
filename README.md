@@ -228,10 +228,11 @@ Model structure of VAE:
 
 
 ## Generative Adversarial Nets (GAN)
-1. [Vanilla GAN](https://arxiv.org/abs/1406.2661)
+1. [Vanilla GAN]
 2. [Conditional GAN](https://arxiv.org/abs/1411.1784)
-3. [InfoGAN](https://arxiv.org/abs/1606.03657)
-4. [Cycle GAN](https://arxiv.org/pdf/1703.10593.pdf)
+3. [InfoGAN]
+4. [Cycle GAN]
+5. [DCGAN](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) (PT)
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
 
@@ -283,6 +284,68 @@ Exemplar results on testset: horse -> zebra
 
 ![](./pics/horse2zebra.gif)
 ![](./pics/horse2zebra1.gif)
+
+### Model structure of DCGAN:
+DCGAN explicitly uses convolutional and convolutional-transpose layers in the discriminator and generator, respectively.
+
+The discriminator is made up of strided convolution layers, batch norm layers, and LeakyReLU activations. The generator is comprised of convolutional-transpose layers, batch norm layers, and ReLU activations.
+
+1. Celeb-A Faces dataset. See [Pytorch example](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) for more details.
+2. Weight Initialization ~ N(0,0.2).
+3. Use strided convolution rather than pooling to downsample because it lets the network learn its own pooling function.
+4. Batch norm and leaky relu functions promote healthy gradient flow which is critical.
+5. Both are Adam optimizers with learning rate 0.0002 and Beta1 = 0.5.
+6. First generate a fixed batch of latent vectors that are drawn from a Gaussian distribution. Then in every training step, periodically input this fixed_noise to calculate loss.
+
+It is a great code for CNN sequential and GPU device.
+
+```python
+# ConvTranspose2d
+nn.Sequential(
+            # input is Z, going into a convolution
+            nn.ConvTranspose2d( nz, ngf * 8, 4, 1, 0, bias=False),
+            nn.BatchNorm2d(ngf * 8),
+            nn.ReLU(True),
+            # state size. (ngf*8) x 4 x 4
+            nn.ConvTranspose2d(ngf * 8, ngf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ngf * 4),
+            nn.ReLU(True),
+            # state size. (ngf*4) x 8 x 8
+            nn.ConvTranspose2d( ngf * 4, ngf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ngf * 2),
+            nn.ReLU(True),
+            # state size. (ngf*2) x 16 x 16
+            nn.ConvTranspose2d( ngf * 2, ngf, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ngf),
+            nn.ReLU(True),
+            # state size. (ngf) x 32 x 32
+            nn.ConvTranspose2d( ngf, nc, 4, 2, 1, bias=False),
+            nn.Tanh()
+            # state size. (nc) x 64 x 64
+        )
+
+# Conv2d
+nn.Sequential(
+            # input is (nc) x 64 x 64
+            nn.Conv2d(nc, ndf, 4, 2, 1, bias=False),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf) x 32 x 32
+            nn.Conv2d(ndf, ndf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 2),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf*2) x 16 x 16
+            nn.Conv2d(ndf * 2, ndf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 4),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf*4) x 8 x 8
+            nn.Conv2d(ndf * 4, ndf * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 8),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. (ndf*8) x 4 x 4
+            nn.Conv2d(ndf * 8, 1, 4, 1, 0, bias=False),
+            nn.Sigmoid()
+        )
+```
 
 ## Recurrent Neural Network (RNN)
 1. [Classifying names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html) (PT)
@@ -451,7 +514,7 @@ The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letter
 In RNN, we introduce the char-level input (every character is encoded into a vector). Now, each word is encoded into a number. We can turn this number into a vector by one-hot encoding, but the vocabulary size is too big and one-hot doesn't have Dristributed representation (mathematical vector property). Hence, we use NN to learn the latent word vector itself (embedding).
 
 1. [NGram](https://pytorch.org/tutorials/beginner/nlp/word_embeddings_tutorial.html#sphx-glr-beginner-nlp-word-embeddings-tutorial-py) (PT)
-2. Skip-gram with negative sample (TF)
+2. [Skip-gram with negative sample] (TF)
 3. [tag_word](https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html#sphx-glr-beginner-nlp-sequence-models-tutorial-py) (PT)
 4. [seq2seq translation](https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html#sphx-glr-intermediate-seq2seq-translation-tutorial-py) (PT)
 5. [chatbot](https://pytorch.org/tutorials/beginner/chatbot_tutorial.html) (PT)
