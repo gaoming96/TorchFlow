@@ -60,9 +60,9 @@ for i, data in enumerate(trainloader):
 ```
 
 ## CNN
-1. [cifar10] (PT)
-2. [spatial transformer] (PT)
-3. [transfer learning] (PT)
+1. [cifar10](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html) (PT)
+2. [spatial transformer](https://pytorch.org/tutorials/intermediate/spatial_transformer_tutorial.html) (PT)
+3. [transfer learning](https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html) (PT)
 
 ### cifar10:
 In this pytorch official tutorial, we emphasis on `DataLoader`, CNN structure, `torch.no_grad()` in test step and GPU usage.
@@ -201,7 +201,7 @@ model_ft.training
 
 VAE is the simplest Generative Model. It learns `mean` and `log_sd` of the latent variable. After the model is built, we may generate samples from a Normal distribution. The Conditional VAE has labels as the input and we can generate samples fixing the specific label.
 
-The codes are based on original papers and wiseodd/generative-models, however, I make some improvements:
+The codes are based on original papers and [wiseodd/generative-models](https://github.com/wiseodd/generative-models), however, I make some improvements:
 1. I try to make both Pytorch and Tensorflow's code similarly to each other.
 2. Both codes are as simple and concise as possible (don't use argparse or some fancy utils).
 3. Both codes are updated to the latest version (TF: API r1.12, PT: Version 1.0 (`Variable` is deprecated)).
@@ -235,7 +235,7 @@ Model structure of VAE:
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
 
-The codes are based on original papers and wiseodd/generative-models, however, I make some improvements:
+The codes are based on original papers and [wiseodd/generative-models](https://github.com/wiseodd/generative-models), however, I make some improvements:
 1. I try to make both Pytorch and Tensorflow's code similarly to each other.
 2. Both codes are as simple and concise as possible (don't use argparse or some fancy utils).
 3. Both codes are updated to the latest version (TF: API r1.12, PT: Version 1.0 (`Variable` is deprecated)).
@@ -285,8 +285,8 @@ Exemplar results on testset: horse -> zebra
 ![](./pics/horse2zebra1.gif)
 
 ## Recurrent Neural Network (RNN)
-1. [Classifying names from languages] (PT)
-2. [Generating names from languages] (PT)
+1. [Classifying names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html) (PT)
+2. [Generating names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_generation_tutorial.html) (PT)
 3. [Predicting hand-written number] (TF)
 4. [Generating shakespeares play] (TF)
 
@@ -450,11 +450,11 @@ The dataset is a period of shakespeares novel. We set batch=1, seq=25 (25 letter
 
 In RNN, we introduce the char-level input (every character is encoded into a vector). Now, each word is encoded into a number. We can turn this number into a vector by one-hot encoding, but the vocabulary size is too big and one-hot doesn't have Dristributed representation (mathematical vector property). Hence, we use NN to learn the latent word vector itself (embedding).
 
-1. NGram (PT)
+1. [NGram](https://pytorch.org/tutorials/beginner/nlp/word_embeddings_tutorial.html#sphx-glr-beginner-nlp-word-embeddings-tutorial-py) (PT)
 2. Skip-gram with negative sample (TF)
-3. tag_word (PT)
-4. seq2seq translation (PT)
-5. chatbot (PT)
+3. [tag_word](https://pytorch.org/tutorials/beginner/nlp/sequence_models_tutorial.html#sphx-glr-beginner-nlp-sequence-models-tutorial-py) (PT)
+4. [seq2seq translation](https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html#sphx-glr-intermediate-seq2seq-translation-tutorial-py) (PT)
+5. [chatbot](https://pytorch.org/tutorials/beginner/chatbot_tutorial.html) (PT)
 
 We introduce several similar word2vec methods: NGram, CBOW and Skip-Gram.
 
