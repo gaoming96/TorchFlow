@@ -4,7 +4,7 @@ Here, I grasp some famous and interesting deep learning projects for me to use a
 I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 
 1. [neural-style](https://github.com/anishathalye/neural-style)
-2.
+2. [fast-style-transfer](https://github.com/lengstrom/fast-style-transfer)
 
 ## neural-style
 
@@ -29,9 +29,6 @@ style transfer of a finer features will be favored over style transfer of a more
 If TRUE, only heritage texture and luma of style figure.
 7. `--overwrite` overwrite the existed output figure.
 
-
-
-
 ### Results
 
 1. Size: content: 12k, style: 100k, iter: 1000. Time: 400s
@@ -48,4 +45,28 @@ We put content, style, output in vggnet and can get several features (eg: conv1_
 We set **content loss as the MSE of conv1_2(content) and conv1_2(output). style loss is MSE of G(style) and G(output), while G is the GRAM matrix (covariance without centered)**.
 
 ![](.././pics/vgg.png)
+
+## fast-style-transfer
+### Usage
+#### Requirement
+`pip install --trusted-host pypi.python.org moviepy`
+
+type `python`, `import imageio` then `imageio.plugins.ffmpeg.download()`. See [here](https://github.com/lengstrom/fast-style-transfer/issues/129)
+
+#### Evaluation
+We have downloaded (learned) sevral `ckpt` files (in ckpts folder) which we can use directly. In styles folder, we can see what these styles are.
+
+`cd C:\Users\kanny\Desktop\playground\fast-style-transfer`
+
+`python evaluate.py --checkpoint ckpts\la_muse.ckpt --in-path contents\fhr.jpg --out-path outputs\fhr_la_muse.jpg`
+
+One figure in 3 seconds. Fast, nearly real-time.
+
+#### Train
+If I want to train my own style, I first need to download a 12GB file train2014 dataset and then train for around 4 month (but 4 hours on a Maxwell Titan X).
+
+`python style.py --style styles\shinkai0.jpg --checkpoint-dir checkpoints --test contents\building.jpg --test-dir test_directory --content-weight 1.5e1 --checkpoint-iterations 100 --batch-size 1`
+
+Too long a time for my poor laptop.
+
 
