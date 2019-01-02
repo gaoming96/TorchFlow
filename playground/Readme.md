@@ -8,8 +8,6 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 
 ## neural-style
 
-### Theoretical concepts
-
 ### Usage
 `cd C:\Users\kanny\Desktop\playground\neural-style`
 
@@ -41,7 +39,13 @@ If TRUE, only heritage texture and luma of style figure.
 3. Size: content: 250k, style: 500k, iter: 1000. Time: 600s
 4. Size: content: 600k, style: 600k, out of memory for my computer
 
+### Theoretical concepts
 
+The weights are not trained here, we use pretrained vggnet weights. What we have is content figure and style figure and what we want is output figure. At first the output figure is noise (or content figure to accelerate speed). We learn the output figure each time.
 
+We put content, style, output in vggnet and can get several features (eg: conv1_2). Although these three figures are different in size, we can still use vggnet (because conv layer don't care about the input_size). conv1_2(content) is a cube.
 
+We set **content loss as the MSE of conv1_2(content) and conv1_2(output). style loss is MSE of G(style) and G(output), while G is the GRAM matrix (covariance without centered)**.
+
+![](.././pics/vgg.png)
 
