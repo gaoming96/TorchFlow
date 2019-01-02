@@ -46,6 +46,9 @@ We set **content loss as the MSE of conv1_2(content) and conv1_2(output). style 
 
 ![](.././pics/vgg.png)
 
+We can also realize it ourselves with the help of [Pytorch tutorial](https://pytorch.org/tutorials/advanced/neural_style_tutorial.html).
+However, there are many tricks and strange codes in it. Thus I don't pay time looking at it.
+
 ## fast-style-transfer
 ### Usage
 #### Requirement
