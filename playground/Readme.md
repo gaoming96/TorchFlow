@@ -62,6 +62,8 @@ We have downloaded (learned) sevral `ckpt` files (in ckpts folder) which we can 
 
 One figure in 3 seconds. Fast, nearly real-time.
 
+Also, there is a [website](https://tenso.rs/demos/fast-neural-style/) for us to run the evaluation online.
+
 #### Train
 If I want to train my own style, I first need to download a 12GB file train2014 dataset and then train for around 4 month (but 4 hours on a Maxwell Titan X).
 
