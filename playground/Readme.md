@@ -176,15 +176,16 @@ python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycl
 
 - Several important params in training:
 
-1. parser.add_argument('--display_freq', type=int, default=400, help='frequency of showing training results on screen')
-2. parser.add_argument('--niter', type=int, default=100, help='# of iter at starting learning rate')
-3. parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
+1.         parser.add_argument('--display_freq', type=int, default=400, help='frequency of showing training results on screen')
+2.         parser.add_argument('--niter', type=int, default=100, help='# of iter at starting learning rate')
+3.         parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
 4. set --gpu_ids 0,1,2 for multi-GPU mode.
-5. parser.add_argument('--batch_size', type=int, default=1, help='input batch size')
+5.         parser.add_argument('--batch_size', type=int, default=1, help='input batch size')
 6.         parser.add_argument('--loadSize', type=int, default=286, help='scale images to this size')
 7.         parser.add_argument('--fineSize', type=int, default=256, help='then crop to this size')
 
 - Failed
+
 The above code fails.
 UserWarning: Palette images with Transparency expressed in bytes should be converted to RGBA images 'to RGBA images').
 
