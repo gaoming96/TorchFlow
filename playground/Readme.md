@@ -101,6 +101,17 @@ We can see this model in a easy way. If we forget VGG net, we use a Network to g
 
 In left fig, input figure is the same as content figure. In middle fig is the structure of Transform Net. In right fig is the residual block.
 
+Finally, thanks to the real-time, we can make videos.
+
+Here we transformed every frame in a video, then combined the results. [Click to go to the full demo on YouTube!](https://www.youtube.com/watch?v=xVJwwWQlQ1o) The style here is Udnie, as above.
+<div align = 'center'>
+     <a href = 'https://www.youtube.com/watch?v=xVJwwWQlQ1o'>
+        <img src = 'pics/fox_udnie.gif' alt = 'Stylized fox video. Click to go to YouTube!' width = '800px' height = '400px'>
+     </a>
+</div>
+
+See how to generate these videos [here](#stylizing-video)!
+
 ## Shell
 Shell (bash) is really useful and convenient. However I am using windows... 
 
