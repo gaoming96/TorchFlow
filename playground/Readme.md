@@ -171,7 +171,7 @@ python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoi
 cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
 # start the visdom server before starting the training; You can also disable the visdom by setting --display_id 0. See Q&A for details
 # python -m visdom.server
-python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycle_gan --display_freq 50 --niter 1 --display_id 0 --gpu_ids -1
+python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycle_gan --display_freq 50 --niter 1 --display_id 0 --batch_size 3 --loadSize 16 --fineSize 16 --gpu_ids -1
 ```
 
 - Several important params in training:
@@ -181,3 +181,12 @@ python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycl
 3. parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
 4. set --gpu_ids 0,1,2 for multi-GPU mode.
 5. parser.add_argument('--batch_size', type=int, default=1, help='input batch size')
+6.         parser.add_argument('--loadSize', type=int, default=286, help='scale images to this size')
+7.         parser.add_argument('--fineSize', type=int, default=256, help='then crop to this size')
+
+- Failed
+The above code fails.
+UserWarning: Palette images with Transparency expressed in bytes should be converted to RGBA images 'to RGBA images').
+
+I need to change data loader in order to read png files. See [here](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/issues/321) and Q&A.
+
