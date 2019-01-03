@@ -119,14 +119,24 @@ First I download [Cygwin](https://www.cygwin.com/). In the installatin, I choose
 
 Now I can use `pwd` `ls` `mkdir` `echo`.
 
-`cd /cygdrive/c/Users/kanny/Desktop/playground/shell`
-
-`bash test.sh`
+```
+cd /cygdrive/c/Users/kanny/Desktop/playground/shell
+bash test.sh
+```
 
 We can choose different arguments.
 
-`cd /cygdrive/c/Users/kanny/Desktop/playground/fast-style-transfer`
-
-`bash test.sh fhr la_muse`
+```
+cd /cygdrive/c/Users/kanny/Desktop/playground/fast-style-transfer
+bash test.sh fhr la_muse
+```
 
 Also, we can use `do` as for loop. See `test2.sh` in fast-style-transfer directory.
+
+Also, we can download files easily.
+
+```
+cd /cygdrive/c/Users/kanny/Desktop/playground/pytorch-CycleGAN-and-pix2pix
+bash ./scripts/download_cyclegan_model.sh summer2winter_yosemite
+bash ./datasets/download_cyclegan_dataset.sh summer2winter_yosemite
+```
