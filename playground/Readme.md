@@ -118,4 +118,4 @@ We can choose different arguments.
 
 `bash test.sh fhr la_muse`
 
-Also, we can use `do` as for loop. See `test2.sh`
+Also, we can use `do` as for loop. See `test2.sh` in fast-style-transfer directory.
