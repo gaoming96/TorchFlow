@@ -158,7 +158,7 @@ bash ./datasets/download_cyclegan_dataset.sh summer2winter_yosemite
 ```
 Then we begin to test. dataroot is the test_input, it could contain many pictures. name is the location of pth file. The output is automatically in results\summer2winter_yosemite_pretrained\test_latest\images.
 
-```python
+```
 cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
 python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoints\summer2winter_yosemite_pretrained --model test --no_dropout
 ```
@@ -166,7 +166,8 @@ python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoi
 ### Train
 - Download data, seprerate to 2 folders: trainA & trainB
 - Train a model
-```python
+
+```
 cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
 # start the visdom server before starting the training; You can also disable the visdom by setting --display_id 0. See Q&A for details
 # python -m visdom.server
