@@ -44,7 +44,9 @@ We put content, style, output in vggnet and can get several features (eg: conv1_
 
 We set **content loss as the MSE of conv1_2(content) and conv1_2(output). style loss is MSE of G(style) and G(output), while G is the GRAM matrix (covariance without centered)**.
 
-![](.././pics/vgg.png)
+![](.././pics/vgg.jpg)
+
+In right fig, y is the data (input) in left fig. Note that relu1_2 is acutally a cube (64 dimension rather than 3 dim as in a orinary figure), but we can plot it. From the right fig, we can see indeed that VGG learns the texture of a figure.
 
 We can also realize it ourselves with the help of [Pytorch tutorial](https://pytorch.org/tutorials/advanced/neural_style_tutorial.html).
 However, there are many tricks and strange codes in it. Thus I don't pay time looking at it.
@@ -57,7 +59,7 @@ However, there are many tricks and strange codes in it. Thus I don't pay time lo
 type `python`, `import imageio` then `imageio.plugins.ffmpeg.download()`. See [here](https://github.com/lengstrom/fast-style-transfer/issues/129)
 
 #### Evaluation
-We have downloaded (learned) sevral `ckpt` files (in ckpts folder) which we can use directly. In styles folder, we can see what these styles are.
+We have downloaded (learned) sevral `ckpt` files (in ckpts folder) which we can use directly. In styles folder, we can see what these styles are. These ckpt files is the learned weights of Transform Net.
 
 `cd C:\Users\kanny\Desktop\playground\fast-style-transfer`
 
@@ -68,10 +70,33 @@ One figure in 3 seconds. Fast, nearly real-time.
 Also, there is a [website](https://tenso.rs/demos/fast-neural-style/) for us to run the evaluation online.
 
 #### Train
-If I want to train my own style, I first need to download a 12GB file train2014 dataset and then train for around 4 month (but 4 hours on a Maxwell Titan X).
+If I want to train my own style, I first need to download a 12GB file COCO dataset (figures) and then train for around 4 month (but 4 hours on a Maxwell Titan X).
 
 `python style.py --style styles\shinkai0.jpg --checkpoint-dir checkpoints --test contents\building.jpg --test-dir test_directory --content-weight 1.5e1 --checkpoint-iterations 100 --batch-size 1`
 
 Too long a time for my poor laptop.
 
+### Theoretical concepts
+Rather than learning input which is a generative model, we turn into a supervised model (learning weights). Thus, it takes more time in training step but is real-time in test step.
+
+First, we fix a style figure. The input is a figure (from train 2014 dataset). Each time we put input figure into a Transform Net, we get output of the same size (also is a 3D cube figure). The weights of Transform Net is learnable. **We treat Transform_net_output as the desired output.** Now is the same as neural-style model: we put output, content, style into VGG and get LOSS function. We update weights to minimize the LOSS.
+
+Thus, for every style, we learn a Transform Net.
+
+Transform Net:
+
+1. Eschew pooling layer and use fractionally strided conv layer. Reason: conv layer is more smooth and can learn its own function (by diferrent weight).
+2. Use residual blocks. Reason: residual blocks can learn identify function (we indeed want some identifications between output and input).
+3. All conv layers are followed by batch normalization + RELUE.
+4. downsample(stride 2) + upsample(stride 1/2) in conv layer. Reason: save computations (compared with conv layer of stride 1). have deeper receptive field sizes.
+5. In the last layer, we use scaled tanh to turn the output in [0,255].
+5. Use L-BFGS (qausi-Newton) to update. Also, we can use Adam, which is faster.
+
+LOSS = content + style + TV (Total Variation Regularization).
+
+We can see this model in a easy way. If we forget VGG net, we use a Network to get output and compute LOSS (**very specific deep learning unreasonable thoughts**): pixel-difference of output and style. However, pixel-difference cannot handel semantic and Perceptral things (eg: if move a figure one pixel up, pixel loss is high). Luckily VGG can represent some Perceptral of a figure.
+
+![](.././pics/fast_style_structure.jpg)
+
+In middle fig is the structure of Transform Net. In right fig is the residual block.
 
