@@ -6,6 +6,7 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 1. [neural-style](https://github.com/anishathalye/neural-style)
 2. [fast-style-transfer](https://github.com/lengstrom/fast-style-transfer)
 3. shell
+4. [pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
 
 ## Neural-style
 
@@ -140,3 +141,40 @@ cd /cygdrive/c/Users/kanny/Desktop/playground/pytorch-CycleGAN-and-pix2pix
 bash ./scripts/download_cyclegan_model.sh summer2winter_yosemite
 bash ./datasets/download_cyclegan_dataset.sh summer2winter_yosemite
 ```
+## Pytorch-CycleGAN-and-pix2pix
+
+### Datasets
+All avaiable [datasets](https://people.eecs.berkeley.edu/~taesung_park/CycleGAN/datasets/) and avaiable pretrained [models](http://efrosgans.eecs.berkeley.edu/cyclegan/pretrained_models/)
+
+We can for example train VanGogh2photo, that is, trainA is all VanGogh's paintings and trainB is ordinary photos. CycleGan can transform photo to VanGogh type.
+
+### Test
+Download pretrained weights and datasets in cygwin. Will automatically make directory: checkpoints\summer2winter_yosemite_pretrained\latest_net_G.pth and datasets\summer2winter_yosemite\data.jpg
+
+```
+cd /cygdrive/c/Users/kanny/Desktop/playground/pytorch-CycleGAN-and-pix2pix
+bash ./scripts/download_cyclegan_model.sh summer2winter_yosemite
+bash ./datasets/download_cyclegan_dataset.sh summer2winter_yosemite
+```
+Then we begin to test. dataroot is the test_input, it could contain many pictures. name is the location of pth file. The output is automatically in results\summer2winter_yosemite_pretrained\test_latest\images.
+
+```python
+cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
+python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoints\summer2winter_yosemite_pretrained --model test --no_dropout
+```
+
+### Train
+- Download data, seprerate to 2 folders: trainA & trainB
+- Train a model
+```python
+cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
+python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycle_gan --display_freq 50 --niter 1
+```
+
+Several important params:
+
+1. parser.add_argument('--display_freq', type=int, default=400, help='frequency of showing training results on screen')
+2. parser.add_argument('--niter', type=int, default=100, help='# of iter at starting learning rate')
+3. parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
+4. set --gpu_ids 0,1,2 for multi-GPU mode.
+5. parser.add_argument('--batch_size', type=int, default=1, help='input batch size')
