@@ -81,7 +81,7 @@ Rather than learning input which is a generative model, we turn into a supervise
 
 First, we fix a style figure. The input is a figure (from train 2014 dataset). Each time we put input figure into a Transform Net, we get output of the same size (also is a 3D cube figure). The weights of Transform Net is learnable. **We treat Transform_net_output as the desired output.** Now is the same as neural-style model: we put output, content, style into VGG and get LOSS function. We update weights to minimize the LOSS.
 
-Thus, for every style, we learn a Transform Net.
+Thus, for every style, we learn a Transform Net. (If input fixed, the loss should also fixed)
 
 Transform Net:
 
@@ -98,5 +98,5 @@ We can see this model in a easy way. If we forget VGG net, we use a Network to g
 
 ![](.././pics/fast_style_structure.jpg)
 
-In middle fig is the structure of Transform Net. In right fig is the residual block.
+In left fig, input figure is the same as content figure. In middle fig is the structure of Transform Net. In right fig is the residual block.
 
