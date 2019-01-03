@@ -5,8 +5,9 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 
 1. [neural-style](https://github.com/anishathalye/neural-style)
 2. [fast-style-transfer](https://github.com/lengstrom/fast-style-transfer)
+3. shell
 
-## neural-style
+## Neural-style
 
 ### Usage
 `cd C:\Users\kanny\Desktop\playground\neural-style`
@@ -51,7 +52,7 @@ In right fig, y is the data (input) in left fig. Note that relu1_2 is acutally a
 We can also realize it ourselves with the help of [Pytorch tutorial](https://pytorch.org/tutorials/advanced/neural_style_tutorial.html).
 However, there are many tricks and strange codes in it. Thus I don't pay time looking at it.
 
-## fast-style-transfer
+## Fast-style-transfer
 ### Usage
 #### Requirement
 `pip install --trusted-host pypi.python.org moviepy`
@@ -100,3 +101,21 @@ We can see this model in a easy way. If we forget VGG net, we use a Network to g
 
 In left fig, input figure is the same as content figure. In middle fig is the structure of Transform Net. In right fig is the residual block.
 
+## Shell
+Shell (bash) is really useful and convenient. However I am using windows... 
+
+First I download [Cygwin](https://www.cygwin.com/). In the installatin, I choose to add `bash`. Finally, I get a desktop: Cygwin64 Terminal.
+
+Now I can use `pwd` `ls` `mkdir` `echo`.
+
+`cd /cygdrive/c/Users/kanny/Desktop/playground/shell`
+
+`bash test.sh`
+
+We can choose different arguments.
+
+`cd /cygdrive/c/Users/kanny/Desktop/playground/fast-style-transfer`
+
+`bash test.sh fhr la_muse`
+
+Also, we can use `do` as for loop. See `test2.sh`
