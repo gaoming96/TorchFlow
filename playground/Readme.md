@@ -160,8 +160,6 @@ Then we begin to test. dataroot is the test_input, it could contain many picture
 
 ```python
 cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
-# start the visdom server before starting the training; You can also disable the visdom by setting --display_id 0. See Q&A for details
-python -m visdom.server
 python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoints\summer2winter_yosemite_pretrained --model test --no_dropout
 ```
 
@@ -170,10 +168,12 @@ python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoi
 - Train a model
 ```python
 cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
-python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycle_gan --display_freq 50 --niter 1
+# start the visdom server before starting the training; You can also disable the visdom by setting --display_id 0. See Q&A for details
+# python -m visdom.server
+python train.py --dataroot ./datasets/emojis --name emojis_cyclegan --model cycle_gan --display_freq 50 --niter 1 --display_id 0 --gpu_ids -1
 ```
 
-Several important params:
+- Several important params in training:
 
 1. parser.add_argument('--display_freq', type=int, default=400, help='frequency of showing training results on screen')
 2. parser.add_argument('--niter', type=int, default=100, help='# of iter at starting learning rate')
