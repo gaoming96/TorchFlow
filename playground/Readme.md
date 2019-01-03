@@ -160,6 +160,8 @@ Then we begin to test. dataroot is the test_input, it could contain many picture
 
 ```python
 cd C:\Users\kanny\Desktop\playground\pytorch-CycleGAN-and-pix2pix
+# start the visdom server before starting the training; You can also disable the visdom by setting --display_id 0. See Q&A for details
+python -m visdom.server
 python test.py --dataroot datasets/summer2winter_yosemite/mytest --name checkpoints\summer2winter_yosemite_pretrained --model test --no_dropout
 ```
 
