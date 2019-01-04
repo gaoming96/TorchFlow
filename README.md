@@ -233,14 +233,11 @@ Model structure of VAE:
 3. [InfoGAN]
 4. [Cycle GAN]
 5. [DCGAN](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) (PT)
+6. [BEGAN]
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
 
-The codes are based on original papers and [wiseodd/generative-models](https://github.com/wiseodd/generative-models), however, I make some improvements:
-1. I try to make both Pytorch and Tensorflow's code similarly to each other.
-2. Both codes are as simple and concise as possible (don't use argparse or some fancy utils).
-3. Both codes are updated to the latest version (TF: API r1.12, PT: Version 1.0 (`Variable` is deprecated)).
-4. Since it is used for self learning, I don't use higer API (such as keras, eager, layer) and I specify weights explicity, so it is more understandable. However, because it is too complicated in CycleGAN, I use `torch.nn` and `tf.nn` to build layers.
+The codes are based on original papers and [wiseodd/generative-models](https://github.com/wiseodd/generative-models).
 
 ### Model structure of GAN:
 - Discriminator: dimension flow: 784->128->1, relu+sigmod
@@ -346,6 +343,21 @@ nn.Sequential(
             nn.Sigmoid()
         )
 ```
+### Boundary Equilibrium GAN
+Disadvantage of GAN:
+
+1. Hard to train, we need tricks (SRELU, batch norm, batch discrimination). Correct hyper-parameter selection is critical
+2. Controlling the image diversity of the generated samples is difficult. 
+3. Balancing the convergence of the discriminator and of the generator is a challenge: frequently the discriminator wins
+too easily at the beginning of training
+4. modal collapse, a failure mode in which just one image is learned (see playground/ProGAN for details)
+
+BEGAN:
+
+1. A GAN with a simple yet robust architecture, standard training procedure with fast and stable convergence (no tricks)
+2. An equilibrium concept that balances the power of the discriminator against the generator (no too strong discriminator)
+3. A new way to control the trade-off between image diversity and visual quality (fantastic)
+4. An approximate measure of convergence (similar to **Wasserstein GAN (WGAN)**)
 
 ## Recurrent Neural Network (RNN)
 1. [Classifying names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html) (PT)
