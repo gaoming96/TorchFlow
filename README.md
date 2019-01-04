@@ -350,7 +350,7 @@ Disadvantage of GAN:
 2. Controlling the image diversity of the generated samples is difficult. 
 3. Balancing the convergence of the discriminator and of the generator is a challenge: frequently the discriminator wins
 too easily at the beginning of training
-4. modal collapse, a failure mode in which just one image is learned (see playground/ProGAN for details)
+4. mode collapse, a failure mode in which just one image is learned (see playground/ProGAN for details)
 
 BEGAN:
 
