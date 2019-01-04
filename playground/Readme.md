@@ -203,6 +203,8 @@ The code is hard for me to understand and it takes too long time to train, thus 
 If we use vanilla GAN to construct high resolution, it can't converge because of mode collapse.
 
 #### Mode collapse
+Real-life data distributions are multimodal. For example, in MNIST, there are 10 major modes from digit ‘0’ to digit ‘9’. If generator only generates digit '6', it is called mode collapse.
+
 Mode collapse is when the generator generates a limited diversity of samples, or even the same sample, regardless of the input.
 
 This means there exists a single fixed point that the generator thinks is the most optimal point to generate regardless of whatever input noise we feed it.
