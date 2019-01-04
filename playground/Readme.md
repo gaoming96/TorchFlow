@@ -7,6 +7,7 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 2. [fast-style-transfer](https://github.com/lengstrom/fast-style-transfer)
 3. shell
 4. [pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
+5. [Progressive-growing-GAN](https://github.com/tkarras/progressive_growing_of_gans)
 
 ## Neural-style
 
@@ -191,3 +192,31 @@ UserWarning: Palette images with Transparency expressed in bytes should be conve
 
 I need to change data loader in order to read png files. See [here](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix/issues/321) and Q&A.
 
+## Progressive-growing-GAN
+ProGAN is the state-of-art high resolution GAN. [Here](https://blog.csdn.net/liujunru2013/article/details/78545882) is the Chinese translation.
+
+The code is hard for me to understand and it takes too long time to train, thus I don't fork the code here. However, we can take a look and use some pretrained model to generate high resolution face or plane figures.
+
+[ICLR 2018 slides (`karras2018iclr-slides.pptx`)](https://drive.google.com/open?id=1jYlrX4DgTs2VAfRcyl3pcNI4ONkBg3-g) is very concise and readable.
+
+### Theroy
+If we use vanilla GAN to construct high resolution, it can't converge.
+
+The key idea is to grow both the generator and discriminator progressively: starting from a low resolution, we add new layers that model increasingly fine details as training progresses.
+
+![](.././pics/progan1.jpg)
+
+Right fig is the final model structure. Generator input is a random noise of 512, output is 1024\*1024.
+
+Left fig is a step called `fade in`. We treat the layers that operate on the higher resolution like a residual block. `2*` is using nearest neighbor filtering to double size while `0.5*` is average pooling. `toRGB` represents a layer that projects feature vectors to RGB colors, which is 1\*1 conv layer. `fromRGB` is also.
+
+Let's look close to Left fig, we have low resolution fig and then double size, finally add with high resolution fig. Progressive.
+
+![](.././pics/progan2.jpg)
+
+Left left figure is the same, while left right is Discriminator. Right fig is the final model. Note that there are two ouputs in right left: the right one is the correct output.
+
+#### Minibatch discrimination
+Inspired by paper: Improved techniques for training GAN, we add a layer: MBStdev (minibatch stand deviation) in Discriminator.
+
+![](.././pics/mbstdev.png)
