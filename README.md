@@ -377,7 +377,7 @@ In the gray block, we can add a trick (skip connections) for more sharpness.
 
 First, we define a Loss function which measures the input fig and fig after Discriminator.
 
-![](./pics/began_loss1.png)
+![](./pics/began_loss1.jpg)
 
 x: real sample. L(x) is the loss. L(x) has its distribution (distribution of the errors). \mu1: Distribution of L(x).
 
@@ -395,7 +395,7 @@ Now, we try to solve the problem of too strong Discri (D overwhelm G). We introd
 
 \gamma==m2/m1, thus if \gamma lower, m2 lower, Discri greater, thus ...
 
-![](./pics/began_loss2.png)
+![](./pics/began_loss2.jpg)
 
 The right fig is the final LOSS to update.
 
