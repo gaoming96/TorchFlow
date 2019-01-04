@@ -355,9 +355,76 @@ too easily at the beginning of training
 BEGAN:
 
 1. A GAN with a simple yet robust architecture, standard training procedure with fast and stable convergence (no tricks)
-2. An equilibrium concept that balances the power of the discriminator against the generator (no too strong discriminator)
+2. An equilibrium concept that balances the power of the discriminator against the generator (no too strong discriminator, equivalent of D&G)
 3. A new way to control the trade-off between image diversity and visual quality (fantastic)
 4. An approximate measure of convergence (similar to **Wasserstein GAN (WGAN)**)
+
+Key idea: **matching the distribution of the errors instead of matching the distribution of the samples directly**.
+
+
+### Model structure
+![](./pics/began_structure.png)
+
+Discriminator: Encoder+Decoder (output is a figure, not a number). Generator: the same in GAN. 
+
+In Decoder step, upsampling is done by nearest neighbor (easy). G uses the same architecture (though not the same weights) as the
+discriminator decoder. We made this choice only for simplicity. 
+
+In the gray block, we can add a trick (skip connections) for more sharpness.
+
+### LOSS
+**we match the distribution of the errors instead of matching the distribution of the samples directly**.
+
+First, we define a Loss function which measures the input fig and fig after Discriminator.
+
+![](./pics/began_loss1.png)
+
+x: real sample. L(x) is the loss. L(x) has its distribution (distribution of the errors). \mu1: Distribution of L(x).
+
+z: N dim, z~U[-1,1]^N. \mu2: Distri of L(G(z)).
+
+We then use Wasserstein distance of two distributions. Since it is too complex, we try to get lower bound: we compute a lower bound to the Wasserstein distance between the auto-encoder loss distributions of real and generated samples.
+
+Using Jensen’s inequality, we can derive a lower bound **W(\mu1,\mu2)>=m2-m1**, m1=E(\mu1) [because m2>m1]
+
+Discriminator is good == W(\mu1,\mu2) is small == min(m2-m1).
+
+Generator is the opposite of D.
+
+Now, we try to solve the problem of too strong Discri (D overwhelm G). We introduce \gamma as the diversity ratio.
+
+\gamma==m2/m1, thus if \gamma lower, m2 lower, Discri greater, thus ...
+
+![](./pics/began_loss2.png)
+
+The right fig is the final LOSS to update.
+
+```python
+# update D
+# real samples
+D_real = self.discriminator(input)
+D_loss_real = torch.mean(torch.abs(D_real - input))
+# fake samples
+X_b_fake = self.generator(z)
+D_fake = self.discriminator(X_b_fake.detach())
+D_loss_fake = torch.mean(torch.abs(D_fake - X_b_fake))
+D_loss = D_loss_real - kt * D_loss_fake
+D_loss.backward()
+optimizer_D.step()
+
+# update G
+X_b_fake = self.generator(z)
+D_fake = self.discriminator(X_b_fake)
+G_loss = torch.mean(torch.abs(D_fake - X_b_fake))
+G_loss.backward()
+optimizer_G.step()
+
+# update kt
+kt = kt + lambda_k * (gamma * D_loss_real - G_loss)
+kt = float(kt.cpu().data.numpy())
+kt = min(1., max(0., kt))
+```
+
 
 ## Recurrent Neural Network (RNN)
 1. [Classifying names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html) (PT)
