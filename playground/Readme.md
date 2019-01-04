@@ -200,8 +200,14 @@ The code is hard for me to understand and it takes too long time to train, thus 
 [ICLR 2018 slides (`karras2018iclr-slides.pptx`)](https://drive.google.com/open?id=1jYlrX4DgTs2VAfRcyl3pcNI4ONkBg3-g) is very concise and readable.
 
 ### Theroy
-If we use vanilla GAN to construct high resolution, it can't converge.
+If we use vanilla GAN to construct high resolution, it can't converge because of mode collapse.
 
+#### Mode collapse
+Mode collapse is when the generator generates a limited diversity of samples, or even the same sample, regardless of the input.
+
+This means there exists a single fixed point that the generator thinks is the most optimal point to generate regardless of whatever input noise we feed it.
+
+#### Structure
 The key idea is to grow both the generator and discriminator progressively: starting from a low resolution, we add new layers that model increasingly fine details as training progresses.
 
 ![](.././pics/progan1.jpg)
