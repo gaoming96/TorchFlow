@@ -253,7 +253,7 @@ Now, we move on more theoriotical:
 
 We want PG(x;theta)~Pdata. The most common estimator of theta: Max Loglikehood <=> Min KL[ Pdata(x) || PG(x;theta) ]. However, it is hard to calculate.
 
-What is V (objective of GAN)? If we fix G, max V = V(G,D*) = 2\*JSD[ Pdata(x) || PG(x;theta) ]. Thus, the max of V (fixed G) is just **Jensen-Shannon Distance of Pdata and PG**. We then min this distance to updata G.
+What is V (objective of GAN)? If we fix G, max V = V(G,D*) = 2\*JSD[ Pdata(x) || PG(x;theta) ]. Thus, the max of V (fixed G) is just **Jensen-Shannon Distance of Pdata and PG**. We then min this distance to updata G. **G* = argmin Distance( Pdata || PG )**. Ofcourse, we use gradient decent to pudate G.
 
 ### Model structure of GAN:
 - Discriminator: dimension flow: 784->128->1, relu+sigmod
@@ -269,6 +269,12 @@ What is V (objective of GAN)? If we fix G, max V = V(G,D*) = 2\*JSD[ Pdata(x) ||
 - We set x and y as the input. CVAE can both predict a figure and generate selected label's figure
 
 There are many applications of CGAN. eg: given a picture of man, show a picture of his sixties. Face aging (Age-cGAN). It is actually conditioned at his age (a vector). eg: clothes style to shoes (paired data). G: clothes -> shoes. D: shoes conditioned at clothes -> fake.
+
+eg: text2fig translation. Paried data: eg: {"train", train fig}. Here, G&D has two imputs and output of D has 2 meanings.
+
+![](./pics/cgan_structure.jpg)
+
+The left bottom fig is GAN and right bottom fig is CGAN.
 
 ### Model structure of InfoGAN:
 
@@ -479,15 +485,23 @@ Wasserstein GAN is actually before BEGAN, thus BEGAN is more advanced than WGAN.
 
 Why GAN is not convergent? One reason is that, GAN tries to min JSD[ Pdata(x) || PG(x;theta) ] when updating G. However, usually Pdata and PG are not overlapped at all, thus JSD is 0, G's gradient is 0.
 
-So, we change another distance: Wasserstein (Earth Mover) distance.
+So, we change another distance: Wasserstein (Earth Mover) distance. What is it? it is the smallest (best) plan to move earth from one distribution to formulate the other. The amount of earth moved is the distance.
 Advantages: Wasserstein distance changes continously.
 
-However, it is hard to min W(Pdata,PG). We add constraint: Lipschitz continuous.
+However, it is hard to min W(Pdata,PG). We add constraint: Lipschitz continuous. The objective function of WGAN is:
+
+![](./pics/wgan_objective.png)
+
+We then minimize W to get G*. Note that this objective function is quite similar with GAN.
+
+How to satisfy Lipschitz continuous? We clip all the weights to a threshold after the weights are updated each time. Improved version: gradient penalty (norm of gradient should < 1).
+
+![](./pics/wgan_algo.jpg)
 
 Note that GAN is trained by binary output, but WGAN is trained as a regression problem (to approximate distance).
 Thus, we delete Sigmoid step and don't need to log the loss.
 
-How to satisfy Lipschitz continuous? We clip all the weights to a threshold after the weights are updated each time.
+Another advantage of WGAN is that this distance W can be used to balance how great is the fig. Note that in GAN, JSD is always 0 if there is no overlap, thus JSD cannot used to balance.
 
 
 ## Recurrent Neural Network (RNN)
