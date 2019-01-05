@@ -351,6 +351,7 @@ Disadvantage of GAN:
 3. Balancing the convergence of the discriminator and of the generator is a challenge: frequently the discriminator wins
 too easily at the beginning of training
 4. mode collapse, a failure mode in which just one image is learned (see playground/ProGAN for details)
+5. We don't know how great is the model. There are two LOSS in total.
 
 BEGAN:
 
@@ -358,6 +359,7 @@ BEGAN:
 2. An equilibrium concept that balances the power of the discriminator against the generator (no too strong discriminator, equivalent of D&G)
 3. A new way to control the trade-off between image diversity and visual quality (fantastic)
 4. An approximate measure of convergence (similar to **[Wasserstein GAN (WGAN)](https://github.com/github-pengge/GANs)**)
+5. We can use `W_global` (see PT code or paper) to measure how good is the model
 
 Key idea: **matching the distribution of the errors instead of matching the distribution of the samples directly**.
 
