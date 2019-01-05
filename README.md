@@ -235,6 +235,7 @@ Model structure of VAE:
 5. [DCGAN](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) (PT)
 6. [IGAN](https://github.com/openai/improved-gan)
 7. [BEGAN](https://github.com/github-pengge/GANs)
+8. [WGAN](https://github.com/github-pengge/GANs)
 
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
@@ -472,6 +473,14 @@ class G_conv(nn.Module):
 				m.bias.data.fill_(0)
      def forward(self, z):
 ```
+
+### Wasserstein GAN
+Wasserstein GAN is actually before BEGAN, thus BEGAN is more advanced than WGAN. However, BEGAN uses WGAN for reference quite much.
+
+Why GAN is not convergent? One reason is that, GAN tries to min JSD[ Pdata(x) || PG(x;theta) ] when updating G. However, usually Pdata and PG are not overlapped at all, thus JSD is 0, G's gradient is 0.
+
+So, we change another distance: Wasserstein (Earth Move) distance.
+
 
 ## Recurrent Neural Network (RNN)
 1. [Classifying names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html) (PT)
