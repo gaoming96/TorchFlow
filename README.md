@@ -244,7 +244,7 @@ The codes are based on original papers and [wiseodd/generative-models](https://g
 ### GAN theory
 The input figs are under an unknown distribution Pdata. We want generator G(z; theta) is also under that distribution.
 
-![](./pics/gan_objective.png)
+![](./pics/gan_objective.jpg)
 
 Above is the objective (LOSS) of GAN. What is that? We can regard it as Log Binary CrossEntrophy: D(x) is the probability of real fig and we label fig as 1; G(z) as 0. We first update D (max V), then update G (min V).
 
