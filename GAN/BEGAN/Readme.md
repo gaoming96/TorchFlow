@@ -1,0 +1,1 @@
+Implement BEGAN and WGAN
