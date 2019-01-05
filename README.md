@@ -233,7 +233,7 @@ Model structure of VAE:
 3. [InfoGAN]
 4. [Cycle GAN]
 5. [DCGAN](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) (PT)
-6. [BEGAN]
+6. [BEGAN](https://github.com/github-pengge/GANs)
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
 
@@ -357,7 +357,7 @@ BEGAN:
 1. A GAN with a simple yet robust architecture, standard training procedure with fast and stable convergence (no tricks)
 2. An equilibrium concept that balances the power of the discriminator against the generator (no too strong discriminator, equivalent of D&G)
 3. A new way to control the trade-off between image diversity and visual quality (fantastic)
-4. An approximate measure of convergence (similar to **Wasserstein GAN (WGAN)**)
+4. An approximate measure of convergence (similar to **[Wasserstein GAN (WGAN)](https://github.com/github-pengge/GANs)**)
 
 Key idea: **matching the distribution of the errors instead of matching the distribution of the samples directly**.
 
@@ -410,7 +410,7 @@ D_real = self.discriminator(input)
 D_loss_real = torch.mean(torch.abs(D_real - input))
 # fake samples
 X_b_fake = self.generator(z)
-D_fake = self.discriminator(X_b_fake.detach())
+D_fake = self.discriminator(X_b_fake.detach()) # detach so that backward will not apply to generator
 D_loss_fake = torch.mean(torch.abs(D_fake - X_b_fake))
 D_loss = D_loss_real - kt * D_loss_fake
 D_loss.backward()
@@ -429,6 +429,25 @@ kt = float(kt.cpu().data.numpy())
 kt = min(1., max(0., kt))
 ```
 
+#### initialize weights in PT
+```python
+class G_conv(nn.Module):
+    def __init__(self, channel=3, size=4, zdim=100):
+		super(G_conv, self).__init__()
+       
+        # initialize weights
+		for m in self.modules():
+			if isinstance(m, nn.ConvTranspose2d):
+				m.weight.data.normal_(0, 0.02)
+			elif isinstance(m, nn.BatchNorm2d):
+				m.weight.data.normal_(1.0, 0.02)
+				m.bias.data.fill_(0)
+			elif isinstance(m, nn.Linear):
+				m.weight.data.normal_(0, 0.02)
+				m.bias.data.fill_(0)
+     def forward(self, z):
+    
+```
 
 ## Recurrent Neural Network (RNN)
 1. [Classifying names from languages](https://pytorch.org/tutorials/intermediate/char_rnn_classification_tutorial.html) (PT)
