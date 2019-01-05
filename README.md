@@ -236,6 +236,7 @@ Model structure of VAE:
 6. [IGAN](https://github.com/openai/improved-gan)
 7. [BEGAN](https://github.com/github-pengge/GANs)
 8. [WGAN](https://github.com/github-pengge/GANs)
+9. [Pix2pix](https://github.com/phillipi/pix2pix)
 
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
@@ -502,6 +503,40 @@ Note that GAN is trained by binary output, but WGAN is trained as a regression p
 Thus, we delete Sigmoid step and don't need to log the loss.
 
 Another advantage of WGAN is that this distance W can be used to balance how great is the fig. Note that in GAN, JSD is always 0 if there is no overlap, thus JSD cannot used to balance.
+
+### Image to image with CGAN (pix2pix)
+It can realize edge -> photo; day -> night; label -> facade. The aim is quite similar with CycleGAN.
+
+The Chinese translation version is [here](https://blog.csdn.net/qq_16137569/article/details/79950092).
+
+#### Objective
+![](./pics/pix_objective.jpg)
+
+Use L1 norm rather than L2 because L1 encourages less blurring. (the best result under MSE (L2) is mean of inputs, which are less sharp)
+
+In initial experiments, we did not find this strategy effective – the generator simply learned to ignore the noise z.
+
+Instead, for our final models, we provide noise only in the form of dropout, applied on several layers of our generator at both training and test time.
+
+#### Generator (encoder-decoder with skips; U-Net)
+![](./pics/pix_gen.jpg)
+
+Input of G is (z,edge fig), however, as stated above, we don't use z. Output is photo. The dash line is skip connection which we concate at the channel dimension.
+
+#### Discriminator
+![](./pics/pix_dis.jpg)
+
+Input of D is (edge fig, (real/fake) photo), output is a scalar for ImageGAN (which is original). We first concate the two inputs at the channel dimension. Then we introduce PatchGAN.
+
+In order to model high-frequencies, it is sufficient to restrict our attention to the structure in local image patches. Therefore, we design a discriminator architecture – which we term a PatchGAN – that only penalizes structure at the scale of patches. 
+
+This discriminator tries to **classify if each N N patch in an image is real or fake**. We run this discriminator convolutionally across the image, averaging all responses to provide the ultimate output of D.
+
+For N=1, it is called PixcelGAN, which Discriminator discriminate from every pixcel and then average.
+
+we demonstrate that N can be much smaller (eg: N=10) than the full size of the image and still produce high quality results. 
+
+Such a discriminator effectively models the image as a **Markov random field**, assuming independence between pixels separated by more than a patch diameter. 
 
 
 ## Recurrent Neural Network (RNN)
