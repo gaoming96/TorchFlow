@@ -382,8 +382,9 @@ First, we define a Reconstruction Loss function which measures the distance betw
 x: real sample. L(x) is the loss. L(x) has its distribution (distribution of the errors). \mu1: Distribution of L(x). m1=E(\mu1).
 
 z: N dim, z~U[-1,1]^N. \mu2: Distri of L(G(z)).
+m1=E[L(x)]=E[|x-D(x)|]. m2=E[|G(z)-D(G(z))|]. 
 
-m1=E[L(x)]=E[|x-D(x)|]. m2=E[|G(z)-D(G(z))|]. If Discriminator is good => |G(z)-D(G(z))| > |x-D(x)| => m2-m1 > 0, the bigger the better.
+For a imprecise deduction, if Discriminator is good => |G(z)-D(G(z))| > |x-D(x)| => m2-m1 > 0, the bigger the better.
 
 We then use Wasserstein distance of these two distributions. Since it is too complex, we try to get lower bound: we compute a lower bound to the Wasserstein distance between the auto-encoder loss distributions of real and generated samples.
 
@@ -434,8 +435,7 @@ kt = min(1., max(0., kt))
 class G_conv(nn.Module):
     def __init__(self, channel=3, size=4, zdim=100):
 		super(G_conv, self).__init__()
-       
-        # initialize weights
+       		# initialize weights
 		for m in self.modules():
 			if isinstance(m, nn.ConvTranspose2d):
 				m.weight.data.normal_(0, 0.02)
@@ -446,7 +446,6 @@ class G_conv(nn.Module):
 				m.weight.data.normal_(0, 0.02)
 				m.bias.data.fill_(0)
      def forward(self, z):
-    
 ```
 
 ## Recurrent Neural Network (RNN)
