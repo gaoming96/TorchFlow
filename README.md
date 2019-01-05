@@ -241,6 +241,19 @@ GAN trains a discriminator and generator, which is adversarial. Generator G(z) t
 
 The codes are based on original papers and [wiseodd/generative-models](https://github.com/wiseodd/generative-models).
 
+### GAN theory
+The input figs are under an unknown distribution Pdata. We want generator G(z; theta) is also under that distribution.
+
+![](./pics/gan_objective.png)
+
+Above is the objective (LOSS) of GAN. What is that? We can regard it as Log Binary CrossEntrophy: D(x) is the probability of real fig and we label fig as 1; G(z) as 0. We first update D (max V), then update G (min V).
+
+Now, we move on more theoriotical:
+
+We want PG(x;theta)~Pdata. The most common estimator of theta: Max Loglikehood <=> Min KL[Pdata(x)||PG(x:theta)]. However, it is hard to calculate.
+
+What is V (objective of GAN)? If we fix G, max V = V(G,D*) = 2\*JSD[Pdata(x)||PG(x:theta)]. Thus, the max of V (fixed G) is just **Jensen-Shannon Distance of Pdata and PG**. We then min this distance to updata G.
+
 ### Model structure of GAN:
 - Discriminator: dimension flow: 784->128->1, relu+sigmod
 - Generator: dimension flow: 100->128->784, relu+sigmod
@@ -297,6 +310,9 @@ The discriminator is made up of strided convolution layers, batch norm layers, a
 4. Batch norm and leaky relu functions promote healthy gradient flow which is critical.
 5. Both are Adam optimizers with learning rate 0.0002 and Beta1 = 0.5.
 6. First generate a fixed batch of latent vectors that are drawn from a Gaussian distribution. Then in every training step, periodically input this fixed_noise to calculate loss.
+
+Advantages:
+1. It is **continous** from latent space to ouput image. That is, small change in latent noise, small change in output fig.
 
 It is a great code for CNN sequential and GPU device.
 
