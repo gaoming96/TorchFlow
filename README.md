@@ -233,7 +233,9 @@ Model structure of VAE:
 3. [InfoGAN]
 4. [Cycle GAN]
 5. [DCGAN](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) (PT)
-6. [BEGAN](https://github.com/github-pengge/GANs)
+6. [IGAN](https://github.com/openai/improved-gan)
+7. [BEGAN](https://github.com/github-pengge/GANs)
+
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
 
@@ -251,6 +253,8 @@ The codes are based on original papers and [wiseodd/generative-models](https://g
 - Generator: dimension flow: 100+10->128->784+10, relu+sigmod
 - Use xavier to init weights; use U(-1,1) to init z
 - We set x and y as the input. CVAE can both predict a figure and generate selected label's figure
+
+There are many applications of CGAN. eg: given a picture of man, show a picture of his sixties. Face aging (Age-cGAN). It is actually conditioned at his age (a vector).
 
 ### Model structure of InfoGAN:
 
@@ -343,6 +347,9 @@ nn.Sequential(
             nn.Sigmoid()
         )
 ```
+### Improved Techniques for Training GANs (IGAN)
+In this paper, the authors discuss several useful tricks to train GAN.
+
 ### Boundary Equilibrium GAN
 Disadvantage of GAN:
 
@@ -350,7 +357,7 @@ Disadvantage of GAN:
 2. Controlling the image diversity of the generated samples is difficult. 
 3. Balancing the convergence of the discriminator and of the generator is a challenge: frequently the discriminator wins
 too easily at the beginning of training
-4. mode collapse, a failure mode in which just one image is learned (see playground/ProGAN for details)
+4. mode collapse, a failure mode in which just one image is learned (see playground/ProGAN for details) (one way to alleviate it: batch discrimination, see Improved Techniques for Training GANs)
 5. We don't know how great is the model. There are two LOSS in total.
 
 BEGAN:
