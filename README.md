@@ -375,25 +375,29 @@ In the gray block, we can add a trick (skip connections) for more sharpness.
 ### LOSS
 **we match the distribution of the errors instead of matching the distribution of the samples directly**.
 
-First, we define a Loss function which measures the input fig and fig after Discriminator.
+First, we define a Reconstruction Loss function which measures the distance between input fig and fig after Discriminator.
 
 ![](./pics/began_loss1.jpg)
 
-x: real sample. L(x) is the loss. L(x) has its distribution (distribution of the errors). \mu1: Distribution of L(x).
+x: real sample. L(x) is the loss. L(x) has its distribution (distribution of the errors). \mu1: Distribution of L(x). m1=E(\mu1).
 
 z: N dim, z~U[-1,1]^N. \mu2: Distri of L(G(z)).
 
-We then use Wasserstein distance of two distributions. Since it is too complex, we try to get lower bound: we compute a lower bound to the Wasserstein distance between the auto-encoder loss distributions of real and generated samples.
+m1=E[L(x)]=E[|x-D(x)|]. m2=E[|G(z)-D(G(z))|]. If Discriminator is good => |G(z)-D(G(z))| > |x-D(x)| => m2-m1 > 0, the bigger the better.
 
-Using Jensen’s inequality, we can derive a lower bound **W(\mu1,\mu2)>=m2-m1**, m1=E(\mu1) [because m2>m1]
+We then use Wasserstein distance of these two distributions. Since it is too complex, we try to get lower bound: we compute a lower bound to the Wasserstein distance between the auto-encoder loss distributions of real and generated samples.
 
-Discriminator is good == W(\mu1,\mu2) is small == min(m2-m1).
+Using Jensen’s inequality, we can derive a lower bound **W(\mu1,\mu2)>=m2-m1**
+
+The above deduction is the proof that Discriminator is better => min (m1-m2), which is the right fig.
 
 Generator is the opposite of D.
 
-Now, we try to solve the problem of too strong Discri (D overwhelm G). We introduce \gamma as the diversity ratio.
+#### Equilibrium
 
-\gamma==m2/m1, thus if \gamma lower, m2 lower, Discri greater, thus ...
+Only doing above is not necessary, we need to handle strong D weak G problem.
+
+Now, we try to solve the problem of too strong Discri (D overwhelm G). We introduce \gamma as the diversity ratio.
 
 ![](./pics/began_loss2.jpg)
 
