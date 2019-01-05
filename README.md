@@ -253,7 +253,7 @@ Now, we move on more theoriotical:
 
 We want PG(x;theta)~Pdata. The most common estimator of theta: Max Loglikehood <=> Min KL[ Pdata(x) || PG(x;theta) ]. However, it is hard to calculate.
 
-What is V (objective of GAN)? If we fix G, max V = V(G,D*) = 2\*JSD[ Pdata(x) || PG(x;theta) ]. Thus, the max of V (fixed G) is just **Jensen-Shannon Distance of Pdata and PG**. We then min this distance to updata G. **G* = argmin Distance( Pdata || PG )**. Ofcourse, we use gradient decent to pudate G.
+What is V (objective of GAN)? If we fix G, max V = V(G,D\*) = 2\*JSD[ Pdata(x) || PG(x;theta) ]. Thus, the max of V (fixed G) is just **Jensen-Shannon Distance of Pdata and PG**. We then min this distance to updata G. **G\* = argmin Distance( Pdata || PG )**. Ofcourse, we use gradient decent to pudate G.
 
 ### Model structure of GAN:
 - Discriminator: dimension flow: 784->128->1, relu+sigmod
