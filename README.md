@@ -268,7 +268,7 @@ What is V (objective of GAN)? If we fix G, max V = V(G,D*) = 2\*JSD[ Pdata(x) ||
 - Use xavier to init weights; use U(-1,1) to init z
 - We set x and y as the input. CVAE can both predict a figure and generate selected label's figure
 
-There are many applications of CGAN. eg: given a picture of man, show a picture of his sixties. Face aging (Age-cGAN). It is actually conditioned at his age (a vector).
+There are many applications of CGAN. eg: given a picture of man, show a picture of his sixties. Face aging (Age-cGAN). It is actually conditioned at his age (a vector). eg: clothes style to shoes (paired data). G: clothes -> shoes. D: shoes conditioned at clothes -> fake.
 
 ### Model structure of InfoGAN:
 
@@ -479,7 +479,15 @@ Wasserstein GAN is actually before BEGAN, thus BEGAN is more advanced than WGAN.
 
 Why GAN is not convergent? One reason is that, GAN tries to min JSD[ Pdata(x) || PG(x;theta) ] when updating G. However, usually Pdata and PG are not overlapped at all, thus JSD is 0, G's gradient is 0.
 
-So, we change another distance: Wasserstein (Earth Move) distance.
+So, we change another distance: Wasserstein (Earth Mover) distance.
+Advantages: Wasserstein distance changes continously.
+
+However, it is hard to min W(Pdata,PG). We add constraint: Lipschitz continuous.
+
+Note that GAN is trained by binary output, but WGAN is trained as a regression problem (to approximate distance).
+Thus, we delete Sigmoid step and don't need to log the loss.
+
+How to satisfy Lipschitz continuous? We clip all the weights to a threshold after the weights are updated each time.
 
 
 ## Recurrent Neural Network (RNN)
