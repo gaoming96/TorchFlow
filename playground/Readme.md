@@ -6,8 +6,10 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 1. [neural-style](https://github.com/anishathalye/neural-style)
 2. [fast-style-transfer](https://github.com/lengstrom/fast-style-transfer)
 3. shell
-4. [pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
+4. [CycleGAN](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
 5. [Progressive-growing-GAN](https://github.com/tkarras/progressive_growing_of_gans)
+6. [pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
+
 
 ## Neural-style
 
@@ -228,3 +230,47 @@ Left left figure is the same, while left right is Discriminator. Right fig is th
 Inspired by paper: Improved techniques for training GAN, we add a layer: MBStdev (minibatch stand deviation) in Discriminator.
 
 ![](.././pics/mbstdev.png)
+
+## Image to image with CGAN (pix2pix)
+It can realize edge -> photo; day -> night; label -> facade. The aim is quite similar with CycleGAN.
+
+The Chinese translation version is [here](https://blog.csdn.net/qq_16137569/article/details/79950092).
+
+### Objective
+![](./pics/pix_objective.jpg)
+
+Use L1 norm rather than L2 because L1 encourages less blurring. (the best result under MSE (L2) is mean of inputs, which are less sharp)
+
+In initial experiments, we did not find this strategy effective – the generator simply learned to ignore the noise z.
+
+Instead, for our final models, we provide noise only in the form of dropout, applied on several layers of our generator at both training and test time.
+
+### Generator (encoder-decoder with skips; U-Net)
+![](./pics/pix_gen.jpg)
+
+Input of G is (z,edge fig), however, as stated above, we don't use z. Output is photo. The dash line is skip connection which we concate at the channel dimension.
+
+### Discriminator
+![](./pics/pix_dis.jpg)
+
+Input of D is (edge fig, (real/fake) photo), output is a scalar for ImageGAN (which is original). We first concate the two inputs at the channel dimension. Then we introduce PatchGAN.
+
+In order to model high-frequencies, it is sufficient to restrict our attention to the structure in local image patches. Therefore, we design a discriminator architecture – which we term a PatchGAN – that only penalizes structure at the scale of patches. 
+
+This discriminator tries to **classify if each N N patch in an image is real or fake**. We run this discriminator convolutionally across the image, averaging all responses to provide the ultimate output of D.
+
+For N=1, it is called PixcelGAN, which Discriminator discriminate from every pixcel and then average.
+
+we demonstrate that N can be much smaller (eg: N=10) than the full size of the image and still produce high quality results. 
+
+Such a discriminator effectively models the image as a **Markov random field**, assuming independence between pixels separated by more than a patch diameter. 
+
+The TF code using exactly what G&D in the above figs can be found [here](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix).
+
+### Evaluate model
+While quantitative evaluation of generative models is known to be challenging, we have tried using pre-trained semantic classifiers
+to measure the discriminability of the generated stimuli as a pseudo-metric. 
+
+The intuition is that if the generated images are realistic, classifiers trained on real images will be able to classify the synthesized image correctly as well. 
+
+That is FCN-8s architecture.
