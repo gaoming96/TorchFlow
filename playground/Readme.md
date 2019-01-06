@@ -273,4 +273,13 @@ to measure the discriminability of the generated stimuli as a pseudo-metric.
 
 The intuition is that if the generated images are realistic, classifiers trained on real images will be able to classify the synthesized image correctly as well. 
 
-That is FCN-8s architecture.
+That is [**FCN-8s**](https://arxiv.org/pdf/1605.06211.pdf) architecture.
+
+![](.././pics/fcn_structure1.jpg)
+
+FCN is used as semantic segmentation. See fig2, we change fully-connected layer in vgg16 into convolutional layer.
+
+![](.././pics/fcn_structure2.jpg)
+
+Finally, we upsample to the image size.
+
