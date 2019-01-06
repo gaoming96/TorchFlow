@@ -236,7 +236,6 @@ Model structure of VAE:
 6. [IGAN](https://github.com/openai/improved-gan)
 7. [BEGAN](https://github.com/github-pengge/GANs)
 8. [WGAN](https://github.com/github-pengge/GANs)
-9. [Pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
 
 
 GAN trains a discriminator and generator, which is adversarial. Generator G(z) tries to generate from noise z to the same distribution of X, while discriminator (\in [0,1]) tries to discriminate them.
