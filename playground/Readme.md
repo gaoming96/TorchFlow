@@ -257,7 +257,7 @@ Input of D is (edge fig, (real/fake) photo), output is a scalar for ImageGAN (wh
 
 In order to model high-frequencies, it is sufficient to restrict our attention to the structure in local image patches. Therefore, we design a discriminator architecture – which we term a PatchGAN – that only penalizes structure at the scale of patches. 
 
-This discriminator tries to **classify if each N N patch in an image is real or fake**. We run this discriminator convolutionally across the image, averaging all responses to provide the ultimate output of D.
+This discriminator tries to **classify if each N\*N patch in an image is real or fake**. We run this discriminator convolutionally across the image, averaging all responses to provide the ultimate output of D.
 
 For N=1, it is called PixcelGAN, which Discriminator discriminate from every pixcel and then average.
 
