@@ -237,7 +237,7 @@ It can realize edge -> photo; day -> night; label -> facade. The aim is quite si
 The Chinese translation version is [here](https://blog.csdn.net/qq_16137569/article/details/79950092).
 
 ### Objective
-![](./pics/pix_objective.jpg)
+![](.././pics/pix_objective.jpg)
 
 Use L1 norm rather than L2 because L1 encourages less blurring. (the best result under MSE (L2) is mean of inputs, which are less sharp)
 
@@ -246,12 +246,12 @@ In initial experiments, we did not find this strategy effective – the generato
 Instead, for our final models, we provide noise only in the form of dropout, applied on several layers of our generator at both training and test time.
 
 ### Generator (encoder-decoder with skips; U-Net)
-![](./pics/pix_gen.jpg)
+![](.././pics/pix_gen.jpg)
 
 Input of G is (z,edge fig), however, as stated above, we don't use z. Output is photo. The dash line is skip connection which we concate at the channel dimension.
 
 ### Discriminator
-![](./pics/pix_dis.jpg)
+![](.././pics/pix_dis.jpg)
 
 Input of D is (edge fig, (real/fake) photo), output is a scalar for ImageGAN (which is original). We first concate the two inputs at the channel dimension. Then we introduce PatchGAN.
 
