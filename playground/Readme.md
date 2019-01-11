@@ -286,13 +286,11 @@ FCN is used as semantic segmentation. See fig2, we change fully-connected layer 
 Finally, we upsample to the image size.
 
 ## Deepfake
-Given many photos of A and B. In test step, we are given a video of A. Deepfake can transform into a video of B. See [here](https://v.qq.com/x/page/q0642apt86a.html) for amazement.
+Given many photos of A and B. In test step, we are given a video of A. Deepfake can transform into a video of B. See [here](https://v.qq.com/x/page/q0642apt86a.html) for amazement. We can regard as **face transplanting**.
 
 Hilarie and Trump:
 
 ![](.././pics/HilarieTrump.gif)
-
-Face expression transformation:
 
 ![](.././pics/result.gif)
 
@@ -352,9 +350,9 @@ The above code will download used packages for us automatically.
 ### Usage
 Note that since the pretrain model is too big, I don't put it in the repository. You can download at https://anonfile.com/p7w3m0d5be/face-swap.zip.
 
-Also, since the original github repository is updating everyday, we can clone and pull the original one rather than my-forking one. However, what is different is models, photo, data, output directories.
+Also, since the original github repository is updating everyday, we can clone and pull the original one rather than my currently-forking one. However, what are different is models, photo, data, output directories.
 
-See the official [usage](https://github.com/deepfakes/faceswap/blob/master/USAGE.md)
+See the official [usage](https://github.com/deepfakes/faceswap/blob/master/USAGE.md).
 
 #### Extract
 First we need to get photos of A and B. Suppose in the directory: photo\trump, photo\cage.
