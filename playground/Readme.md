@@ -283,3 +283,53 @@ FCN is used as semantic segmentation. See fig2, we change fully-connected layer 
 
 Finally, we upsample to the image size.
 
+## Deepfake
+Given many photos of A and B. In test step, we are given a video of A. Deepfake can transform into a video of B. See [here](https://v.qq.com/x/page/q0642apt86a.html) for amazement.
+
+Hilarie and Trump:
+
+![](.././pics/HilarieTrump.gif)
+
+Face expression transformation:
+
+![](.././pics/result.gif)
+
+### Theory
+How to realize that? We have to do these five steps.
+![](.././pics/deepfake_basic.jpg)
+
+#### video2pics
+We use FFmpeg to transfer. Turn a video into many many fix rate pictures.
+
+    ffmpeg -i clipname -vf fps=framerate -qscale:v 2 "imagename%04d.jpg"
+
+#### face location
+We turn a photo into face. We use `dlib` library. It is based on HOG method. We can use 68 points to label a face.
+![](.././pics/dlib.jpg)
+
+It is defined in `extract.py` to extract faces (in \data folder) from photos.
+
+#### face transformation
+We use encoder decoder to realize it. Suppose X=AUB, A,B is the faces. We learn encoder from all of the data (encoder is the universality of all the faces). Decoder learns specific person. Note that we use `PixelShuffler()` function to add distortion to the figure (because direction of faces may vary).
+
+```python
+X' = Decoder(Encoder(Shuffle(X)))
+Loss = L1Loss(X'-X)
+
+A' = Decoder_A(Encoder(Shuffle(A)))
+Loss_A = L1Loss(A'-A)
+
+B' = Decoder_B(Encoder(Shuffle(B)))
+Loss_B = L1Loss(B'-B)
+
+fakeB=Decoder_B(Encoder(testA))
+```
+
+It is done in `train.py` and `Trainer.py`
+
+#### Convert faces
+`convert.py` to put our result (fakeB) in testA.
+
+#### Model structure
+![](.././pics/deepfake_structure.png)
+
