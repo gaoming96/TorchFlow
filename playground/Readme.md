@@ -101,7 +101,7 @@ LOSS = content + style + TV (Total Variation Regularization).
 
 We can see this model in a easy way. If we forget VGG net, we use a Network to get output and compute LOSS (**very typical deep learning unreasonable thoughts**): pixel-difference of output and style. However, pixel-difference cannot handel semantic and Perceptral things (eg: if move a figure one pixel up, pixel loss is high). Luckily VGG can represent some Perceptral of a figure. 
 
-It is called Perceptual LOSS. It shows clearer output compared with MSE because mean is the average, will blur the picture.
+It is called Perceptual LOSS. It shows clearer(higher resolution) output compared with MSE because mean is the average, will blur the picture.
 
 ![](.././pics/fast_style_structure.jpg)
 
