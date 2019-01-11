@@ -300,6 +300,8 @@ Face expression transformation:
 How to realize that? We have to do these five steps.
 ![](.././pics/deepfake_basic.jpg)
 
+![](.././pics/deepfake_basic1.jpg)
+
 #### video2pics
 We use FFmpeg to transfer. Turn a video into many many fix rate pictures.
 
