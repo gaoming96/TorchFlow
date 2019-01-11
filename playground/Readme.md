@@ -335,3 +335,56 @@ It is done in `train.py` and `Trainer.py`
 #### Model structure
 ![](.././pics/deepfake_structure.png)
 
+### Setup
+See the official very clearly [installation](https://github.com/deepfakes/faceswap/blob/master/INSTALL.md).
+
+For windows, I need to download exactly Microsoft Visual Studio 2015 from https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409
+(just follow the above official setup).
+
+```
+cd C:\Users\kanny\Desktop\playground\deepfakes\faceswap
+python setup.py
+```
+The above code will download used packages for us automatically.
+
+### Usage
+See the official [usage](https://github.com/deepfakes/faceswap/blob/master/USAGE.md)
+
+#### Extract
+First we need to get photos of A and B. Suppose in the directory: photo\trump, photo\cage.
+
+```
+python faceswap.py extract -h
+# To convert trump:
+python faceswap.py extract -i photo\trump -o data\trump
+```
+The above extract photos into faces (subset of photos: recognize face landmarks and crop the image) into data\trump, data\cage samely.
+
+#### Train
+We specify the folders where the two faces are, and where we will save our training model. Take long time.
+
+```
+python faceswap.py train -h
+python faceswap.py train -A data\trump -B data\cage -m models\
+```
+
+#### Convert
+Now that we're happy with our trained model, we can convert our video. How does it work? Similarly to the extraction script, actually! The conversion script basically detects a face in a picture using the same algorithm, quickly crops the image to the right size, runs our bot on this cropped image of the face it has found, and then (crudely) pastes the processed face back into the picture.
+
+```
+python faceswap.py convert -h
+python faceswap.py convert -i photo\trump -o output\ -m models\
+
+Error: Alignments file not found at C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump\alignments.json
+```
+`alignments.json` is created in the `extract` step, which indicates, for each aligned frame, its original position in the image from which it was extracted. So it is used in the `convert` step.
+
+#### Pre-trained model
+A pre-trained model is not required, but you can download the following pre-trained Cage/Trump training model. It contains faces of Trump and Cage and 2 decoder & 1 encoder.
+
+Whole project with training images and trained model (~300MB): https://anonfile.com/p7w3m0d5be/face-swap.zip.
+
+Some tips:
+
+Reusing existing models will train much faster than starting from nothing.
+If there is not enough training data, start with someone who looks similar, then switch the data.
