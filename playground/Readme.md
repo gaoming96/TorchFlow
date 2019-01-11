@@ -388,3 +388,16 @@ Some tips:
 
 Reusing existing models will train much faster than starting from nothing.
 If there is not enough training data, start with someone who looks similar, then switch the data.
+
+My try:
+
+The faces data is acutally of no use. We use `.h5` files and suppose they are in directory: faceswap\models\.
+
+Then I download some Trump photo from google and in directory: faceswap\photo\trump.
+
+```
+cd C:\Users\kanny\Desktop\playground\deepfakes\faceswap
+python faceswap.py extract -i photo\trump -o data\trump -D dlib-hog -A dlib
+python faceswap.py convert -i photo\trump -o output\ -m models\
+```
+
