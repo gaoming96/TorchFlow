@@ -1,0 +1,711 @@
+01/10/2019 23:06:00 MainProcess     MainThread      logger          log_setup                 INFO     Log level set to: INFO
+01/10/2019 23:06:00 MainProcess     MainThread      cli             execute_script            DEBUG    Executing: convert. PID: 23332
+01/10/2019 23:06:02 MainProcess     MainThread      convert         __init__                  DEBUG    Initializing Convert: (args: Namespace(alignments_path=None, avg_color_adjust=False, blur_size=2, converter='Masked', discard_frames=False, draw_transparent=False, erosion_kernel_size=None, filter=None, frame_ranges=None, func=<bound method ScriptExecutor.execute_script of <lib.cli.ScriptExecutor object at 0x0000028D45AF14E0>>, gpus=1, input_aligned_dir=None, input_dir='C:\\Users\\kanny\\Desktop\\playground\\deepfakes\\faceswap\\photo\\trump', loglevel='INFO', mask_type='facehullandrect', match_histogram=False, model_dir='C:\\Users\\kanny\\Desktop\\playground\\deepfakes\\faceswap\\models', nfilter=None, output_dir='C:\\Users\\kanny\\Desktop\\playground\\deepfakes\\faceswap\\output', ref_threshold=0.6, seamless_clone=False, sharpen_image=None, smooth_mask=False, swap_model=False, trainer='Original'))
+01/10/2019 23:06:02 MainProcess     MainThread      utils           get_folder                DEBUG    Requested path: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\output'
+01/10/2019 23:06:02 MainProcess     MainThread      utils           get_folder                DEBUG    Returning: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\output'
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         __init__                  DEBUG    Initializing Images
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         check_input_folder        INFO     Input Directory: C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump
+01/10/2019 23:06:02 MainProcess     MainThread      utils           get_image_paths           DEBUG    Scanned Folder contains 4 files
+01/10/2019 23:06:02 MainProcess     MainThread      utils           get_image_paths           DEBUG    Returning 4 images
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         __init__                  DEBUG    Initialized Images
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         __init__                  DEBUG    Initializing Alignments: (is_extract: False, input_is_video: False)
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         set_folder_filename       DEBUG    Alignments from Input Folder: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump'
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         set_folder_filename       DEBUG    Setting Alignments: (folder: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump' filename: 'alignments')
+01/10/2019 23:06:02 MainProcess     MainThread      fsmedia         set_serializer            DEBUG    No Serializer defaulting to: 'json'
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      __init__                  DEBUG    Initializing Alignments: (folder: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump', filename: 'alignments', serializer: 'json')
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      get_serializer            DEBUG    Getting serializer: (filename: 'alignments', serializer: 'json')
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      get_serializer            DEBUG    Serializer set from argument: 'json'
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      get_serializer            VERBOSE  Using 'json' serializer for alignments
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      get_location              DEBUG    Getting location: (folder: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump', filename: 'alignments')
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      get_location              DEBUG    File extension set from serializer: 'json'
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      get_location              VERBOSE  Alignments filepath: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump\alignments.json'
+01/10/2019 23:06:02 MainProcess     MainThread      alignments      load                      DEBUG    Loading alignments
+Traceback (most recent call last):
+  File "C:\Users\kanny\Desktop\playground\deepfakes\faceswap\lib\cli.py", line 89, in execute_script
+    process = script(arguments)
+  File "C:\Users\kanny\Desktop\playground\deepfakes\faceswap\scripts\convert.py", line 34, in __init__
+    self.alignments = Alignments(self.args, False, self.images.is_video)
+  File "C:\Users\kanny\Desktop\playground\deepfakes\faceswap\scripts\fsmedia.py", line 61, in __init__
+    serializer=serializer)
+  File "C:\Users\kanny\Desktop\playground\deepfakes\faceswap\lib\alignments.py", line 36, in __init__
+    self.data = self.load()
+  File "C:\Users\kanny\Desktop\playground\deepfakes\faceswap\scripts\fsmedia.py", line 97, in load
+    data = super().load()
+  File "C:\Users\kanny\Desktop\playground\deepfakes\faceswap\lib\alignments.py", line 118, in load
+    "{}".format(self.file))
+ValueError: Error: Alignments file not found at C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump\alignments.json
+
+============ System Information ============
+git_branch:        Not Found
+git_commits:       Not Found
+gpu_cuda:          Not Found
+gpu_cudnn:         Not Found
+gpu_devices:       GPU_0: GeForce MX150
+gpu_driver:        391.25
+gpu_vram:          GPU_0: 2048MB
+os_machine:        AMD64
+os_platform:       Windows-10-10.0.17134-SP0
+os_release:        10
+py_command:        faceswap.py convert -i photo\trump -o output\ -m models\
+py_conda_version:  conda 4.5.12
+py_implementation: CPython
+py_version:        3.6.5
+py_virtual_env:    False
+sys_cores:         8
+sys_processor:     Intel64 Family 6 Model 142 Stepping 10, GenuineIntel
+sys_ram:           Total: 8089MB, Available: 3842MB, Used: 4246MB, Free: 3842MB
+
+=============== Pip Packages ===============
+absl-py==0.6.1
+alabaster==0.7.10
+anaconda-client==1.6.14
+anaconda-navigator==1.8.7
+anaconda-project==0.8.2
+asn1crypto==0.24.0
+astor==0.7.1
+astroid==1.6.3
+astropy==3.0.2
+attrs==18.1.0
+Babel==2.5.3
+backcall==0.1.0
+backports.shutil-get-terminal-size==1.0.0
+beautifulsoup4==4.6.0
+bitarray==0.8.1
+bkcharts==0.2
+blaze==0.11.3
+bleach==2.1.3
+bokeh==0.12.16
+boto==2.48.0
+Bottleneck==1.2.1
+certifi==2018.4.16
+cffi==1.11.5
+chardet==3.0.4
+click==6.7
+cloudpickle==0.5.3
+clyent==1.2.2
+cmake==3.13.2.post1
+colorama==0.3.9
+comtypes==1.1.4
+conda==4.5.12
+conda-build==3.10.5
+conda-verify==2.0.0
+contextlib2==0.5.5
+cryptography==2.2.2
+cycler==0.10.0
+Cython==0.28.2
+cytoolz==0.9.0.1
+dask==0.17.5
+datashape==0.5.4
+decorator==4.3.0
+distributed==1.21.8
+dlib==19.16.0
+docutils==0.14
+dominate==2.3.5
+entrypoints==0.2.3
+et-xmlfile==1.0.1
+face-recognition==1.2.3
+face-recognition-models==0.3.0
+fastcache==1.0.2
+ffmpy==0.2.2
+filelock==3.0.4
+Flask==1.0.2
+Flask-Cors==3.0.4
+gast==0.2.0
+gevent==1.3.0
+glob2==0.6
+greenlet==0.4.13
+grpcio==1.12.1
+h5py==2.8.0
+heapdict==1.0.0
+html5lib==1.0.1
+idna==2.6
+imageio==2.3.0
+imagesize==1.0.0
+ipykernel==4.8.2
+ipython==6.4.0
+ipython-genutils==0.2.0
+ipywidgets==7.2.1
+isort==4.3.4
+itsdangerous==0.24
+jdcal==1.4
+jedi==0.12.0
+Jinja2==2.10
+jsonschema==2.6.0
+jupyter==1.0.0
+jupyter-client==5.2.3
+jupyter-console==5.2.0
+jupyter-core==4.4.0
+jupyterlab==0.32.1
+jupyterlab-launcher==0.10.5
+Keras==2.2.4
+Keras-Applications==1.0.6
+Keras-Preprocessing==1.0.5
+kiwisolver==1.0.1
+lazy-object-proxy==1.3.1
+llvmlite==0.23.1
+locket==0.2.0
+lxml==4.2.1
+Markdown==3.0.1
+MarkupSafe==1.0
+matplotlib==2.2.2
+mccabe==0.6.1
+menuinst==1.4.14
+mistune==0.8.3
+mkl-fft==1.0.0
+mkl-random==1.0.1
+more-itertools==4.1.0
+moviepy==0.2.3.5
+mpmath==1.0.0
+msgpack-python==0.5.6
+multipledispatch==0.5.0
+navigator-updater==0.2.1
+nbconvert==5.3.1
+nbformat==4.4.0
+networkx==2.1
+nltk==3.3
+nose==1.3.7
+notebook==5.5.0
+numba==0.38.0
+numexpr==2.6.5
+numpy==1.14.3
+numpydoc==0.8.0
+nvidia-ml-py3==7.352.0
+odo==0.5.1
+olefile==0.45.1
+opencv-python==3.4.5.20
+openpyxl==2.5.3
+packaging==17.1
+pandas==0.23.0
+pandocfilters==1.4.2
+parso==0.2.0
+partd==0.3.8
+path.py==11.0.1
+pathlib==1.0.1
+pathlib2==2.3.2
+patsy==0.5.0
+pep8==1.7.1
+pickleshare==0.7.4
+Pillow==5.1.0
+pkginfo==1.4.2
+pluggy==0.6.0
+ply==3.11
+prompt-toolkit==1.0.15
+protobuf==3.6.0
+psutil==5.4.5
+py==1.5.3
+pycodestyle==2.4.0
+pycosat==0.6.3
+pycparser==2.18
+pycrypto==2.6.1
+pycurl==7.43.0.1
+pyflakes==1.6.0
+Pygments==2.2.0
+pylint==1.8.4
+pyodbc==4.0.23
+pyOpenSSL==18.0.0
+pyparsing==2.2.0
+PySocks==1.6.8
+pytest==3.5.1
+pytest-arraydiff==0.2
+pytest-astropy==0.3.0
+pytest-doctestplus==0.1.3
+pytest-openfiles==0.3.0
+pytest-remotedata==0.2.1
+python-dateutil==2.7.3
+pytz==2018.4
+PyWavelets==0.5.2
+pywin32==223
+pywinpty==0.5.1
+PyYAML==3.12
+pyzmq==17.0.0
+QtAwesome==0.4.4
+qtconsole==4.3.1
+QtPy==1.4.1
+requests==2.18.4
+rope==0.10.7
+ruamel-yaml==0.15.35
+scandir==1.7
+scikit-image==0.13.1
+scikit-learn==0.19.1
+scipy==1.1.0
+seaborn==0.8.1
+Send2Trash==1.5.0
+simplegeneric==0.8.1
+singledispatch==3.4.0.3
+six==1.11.0
+snowballstemmer==1.2.1
+sortedcollections==0.6.1
+sortedcontainers==1.5.10
+Sphinx==1.7.4
+sphinxcontrib-websupport==1.0.1
+spyder==3.2.8
+SQLAlchemy==1.2.7
+statsmodels==0.9.0
+sympy==1.1.1
+tables==3.4.3
+tblib==1.3.2
+tensorboard==1.11.0
+tensorflow==1.11.0
+termcolor==1.1.0
+terminado==0.8.1
+testpath==0.3.1
+toolz==0.9.0
+torch==0.4.1
+torchfile==0.1.0
+torchvision==0.2.1
+tornado==5.0.2
+tqdm==4.28.1
+traitlets==4.3.2
+typing==3.6.4
+unicodecsv==0.14.1
+urllib3==1.22
+visdom==0.1.8.5
+wcwidth==0.1.7
+webencodings==0.5.1
+websocket-client==0.54.0
+Werkzeug==0.14.1
+widgetsnbextension==3.2.1
+win-inet-pton==1.0.1
+win-unicode-console==0.5
+wincertstore==0.2
+wrapt==1.10.11
+xlrd==1.1.0
+XlsxWriter==1.0.4
+xlwings==0.11.8
+xlwt==1.3.0
+zict==0.1.3
+
+============== Conda Packages ==============
+# packages in environment at C:\Users\kanny\Anaconda3:
+#
+# Name                    Version                   Build  Channel
+_ipyw_jlab_nb_ext_conf    0.1.0            py36he6757f0_0  
+_r-mutex                  1.0.0                     mro_2    r
+_tflow_select             2.1.0                       gpu    anaconda
+absl-py                   0.6.1                    py36_0    anaconda
+alabaster                 0.7.10           py36hcd07829_0  
+anaconda                  5.2.0                    py36_3  
+anaconda-client           1.6.14                   py36_0  
+anaconda-navigator        1.8.7                    py36_0  
+anaconda-project          0.8.2            py36hfad2e28_0  
+asn1crypto                0.24.0                   py36_0  
+astor                     0.7.1                    py36_0    anaconda
+astroid                   1.6.3                    py36_0  
+astropy                   3.0.2            py36h452e1ab_1  
+attrs                     18.1.0                   py36_0  
+babel                     2.5.3                    py36_0  
+backcall                  0.1.0                    py36_0  
+backports                 1.0              py36h81696a8_1  
+backports.shutil_get_terminal_size 1.0.0            py36h79ab834_2  
+beautifulsoup4            4.6.0            py36hd4cc5e8_1  
+bitarray                  0.8.1            py36hfa6e2cd_1  
+bkcharts                  0.2              py36h7e685f7_0  
+blas                      1.0                         mkl  
+blaze                     0.11.3           py36h8a29ca5_0  
+bleach                    2.1.3                    py36_0  
+blosc                     1.14.3               he51fdeb_0  
+bokeh                     0.12.16                  py36_0  
+boto                      2.48.0           py36h1a776d2_1  
+bottleneck                1.2.1            py36hd119dfa_0  
+bzip2                     1.0.6                hfa6e2cd_5  
+ca-certificates           2018.03.07                    0  
+certifi                   2018.4.16                py36_0  
+cffi                      1.11.5           py36h945400d_0  
+chardet                   3.0.4            py36h420ce6e_1  
+click                     6.7              py36hec8c647_0  
+cloudpickle               0.5.3                    py36_0  
+clyent                    1.2.2            py36hb10d595_1  
+cmake                     3.12.2               he025d50_0  
+colorama                  0.3.9            py36h029ae33_0  
+comtypes                  1.1.4                    py36_0  
+conda                     4.5.12                py36_1000    conda-forge
+conda-build               3.10.5                   py36_0  
+conda-env                 2.6.0                h36134e3_1  
+conda-verify              2.0.0            py36h065de53_0  
+console_shortcut          0.1.1                h6bb2dd7_3  
+contextlib2               0.5.5            py36he5d52c0_0  
+cryptography              2.2.2            py36hfa6e2cd_0  
+cudatoolkit               9.0                           1    anaconda
+cudnn                     7.1.4                 cuda9.0_0    anaconda
+curl                      7.60.0               h7602738_0  
+cycler                    0.10.0           py36h009560c_0  
+cython                    0.28.2           py36hfa6e2cd_0  
+cytoolz                   0.9.0.1          py36hfa6e2cd_0  
+dask                      0.17.5                   py36_0  
+dask-core                 0.17.5                   py36_0  
+datashape                 0.5.4            py36h5770b85_0  
+decorator                 4.3.0                    py36_0  
+distributed               1.21.8                   py36_0  
+docutils                  0.14             py36h6012d8f_0  
+dominate                  2.3.5                     <pip>
+entrypoints               0.2.3            py36hfd66bb0_2  
+et_xmlfile                1.0.1            py36h3d2d736_0  
+fastcache                 1.0.2            py36hfa6e2cd_2  
+ffmpeg                    4.1               h86867b3_1000    conda-forge
+filelock                  3.0.4                    py36_0  
+flask                     1.0.2                    py36_1  
+flask-cors                3.0.4                    py36_0  
+freetype                  2.8                  h51f8f2c_1  
+gast                      0.2.0                    py36_0    anaconda
+get_terminal_size         1.0.0                h38e98db_0  
+gevent                    1.3.0            py36hfa6e2cd_0  
+glob2                     0.6              py36hdf76b57_0  
+greenlet                  0.4.13           py36hfa6e2cd_0  
+grpcio                    1.12.1           py36h1a1b453_0    anaconda
+h5py                      2.7.1            py36h3bdd7fb_2  
+hdf5                      1.10.2               hac2f561_1  
+heapdict                  1.0.0                    py36_2  
+html5lib                  1.0.1            py36h047fa9f_0  
+icc_rt                    2017.0.4             h97af966_0  
+icu                       58.2                 ha66f8fd_1  
+idna                      2.6              py36h148d497_1  
+imageio                   2.3.0                    py36_0  
+imagesize                 1.0.0                    py36_0  
+intel-openmp              2018.0.0                      8  
+ipykernel                 4.8.2                    py36_0  
+ipython                   6.4.0                    py36_0  
+ipython_genutils          0.2.0            py36h3c5d0ee_0  
+ipywidgets                7.2.1                    py36_0  
+isort                     4.3.4                    py36_0  
+itsdangerous              0.24             py36hb6c5a24_1  
+jdcal                     1.4                      py36_0  
+jedi                      0.12.0                   py36_1  
+jinja2                    2.10             py36h292fed1_0  
+jpeg                      9b                   hb83a4c4_2  
+jsonschema                2.6.0            py36h7636477_0  
+jupyter                   1.0.0                    py36_4  
+jupyter_client            5.2.3                    py36_0  
+jupyter_console           5.2.0            py36h6d89b47_1  
+jupyter_core              4.4.0            py36h56e9d50_0  
+jupyterlab                0.32.1                   py36_0  
+jupyterlab_launcher       0.10.5                   py36_0  
+keras-applications        1.0.6                    py36_0    anaconda
+keras-preprocessing       1.0.5                    py36_0    anaconda
+kiwisolver                1.0.1            py36h12c3424_0  
+lazy-object-proxy         1.3.1            py36hd1c21d2_0  
+libcurl                   7.60.0               hc4dcbb0_0  
+libiconv                  1.15                 h1df5818_7  
+libpng                    1.6.34               h79bbb47_0  
+libprotobuf               3.6.0                h1a1b453_0    anaconda
+libsodium                 1.0.16               h9d3ae62_0  
+libssh2                   1.8.0                hd619d38_4  
+libtiff                   4.0.9                hb8ad9f9_1  
+libxml2                   2.9.8                hadb2253_1  
+libxslt                   1.1.32               hf6f1972_0  
+llvmlite                  0.23.1           py36hcacf6c6_0  
+locket                    0.2.0            py36hfed976d_1  
+lxml                      4.2.1            py36heafd4d3_0  
+lzo                       2.10                 h6df0209_2  
+m2w64-gcc-libgfortran     5.3.0                         6  
+m2w64-gcc-libs            5.3.0                         7  
+m2w64-gcc-libs-core       5.3.0                         7  
+m2w64-gmp                 6.1.0                         2  
+m2w64-libwinpthread-git   5.0.0.4634.697f757               2  
+markdown                  3.0.1                    py36_0    anaconda
+markupsafe                1.0              py36h0e26971_1  
+matplotlib                2.2.2            py36h153e9ff_1  
+mccabe                    0.6.1            py36hb41005a_1  
+menuinst                  1.4.14           py36hfa6e2cd_0  
+mistune                   0.8.3            py36hfa6e2cd_1  
+mkl                       2018.0.2                      1  
+mkl-include               2019.1                      144  
+mkl-service               1.1.2            py36h57e144c_4  
+mkl_fft                   1.0.1            py36h452e1ab_0  
+mkl_random                1.0.1            py36h9258bd6_0  
+more-itertools            4.1.0                    py36_0  
+moviepy                   0.2.3.5                   <pip>
+mpmath                    1.0.0            py36hacc8adf_2  
+mro-base                  3.5.1                         3    r
+mro-base_impl             3.5.1                         0    r
+mro-basics                3.5.1                         0    r
+msgpack-python            0.5.6            py36he980bc4_0  
+msys2-conda-epoch         20160418                      1  
+multipledispatch          0.5.0                    py36_0  
+navigator-updater         0.2.1                    py36_0  
+nbconvert                 5.3.1            py36h8dc0fde_0  
+nbformat                  4.4.0            py36h3a5bc1b_0  
+networkx                  2.1                      py36_0  
+nltk                      3.3.0                    py36_0  
+nose                      1.3.7            py36h1c3779e_2  
+notebook                  5.5.0                    py36_0  
+numba                     0.38.0           py36h830ac7b_0  
+numexpr                   2.6.5            py36hcd2f87e_0  
+numpy                     1.14.3           py36h9fa60d3_1  
+numpy-base                1.14.3           py36h555522e_1  
+numpydoc                  0.8.0                    py36_0  
+odo                       0.5.1            py36h7560279_0  
+olefile                   0.45.1                   py36_0  
+openpyxl                  2.5.3                    py36_0  
+openssl                   1.0.2o               h8ea7d77_0  
+packaging                 17.1                     py36_0  
+pandas                    0.23.0           py36h830ac7b_0  
+pandoc                    1.19.2.1             hb2460c7_1  
+pandocfilters             1.4.2            py36h3ef6317_1  
+parso                     0.2.0                    py36_0  
+partd                     0.3.8            py36hc8e763b_0  
+path.py                   11.0.1                   py36_0  
+pathlib2                  2.3.2                    py36_0  
+patsy                     0.5.0                    py36_0  
+pep8                      1.7.1                    py36_0  
+pickleshare               0.7.4            py36h9de030f_0  
+pillow                    5.1.0            py36h0738816_0  
+pip                       18.1                      <pip>
+pip                       10.0.1                   py36_0  
+pkginfo                   1.4.2                    py36_1  
+pluggy                    0.6.0            py36hc7daf1e_0  
+ply                       3.11                     py36_0  
+prompt_toolkit            1.0.15           py36h60b8f86_0  
+protobuf                  3.6.0            py36he025d50_0    anaconda
+psutil                    5.4.5            py36hfa6e2cd_0  
+py                        1.5.3                    py36_0  
+pycodestyle               2.4.0                    py36_0  
+pycosat                   0.6.3            py36h413d8a4_0  
+pycparser                 2.18             py36hd053e01_1  
+pycrypto                  2.6.1            py36hfa6e2cd_8  
+pycurl                    7.43.0.1         py36h74b6da3_0  
+pyflakes                  1.6.0            py36h0b975d6_0  
+pygments                  2.2.0            py36hb010967_0  
+pylint                    1.8.4                    py36_0  
+pyodbc                    4.0.23           py36h6538335_0  
+pyopenssl                 18.0.0                   py36_0  
+pyparsing                 2.2.0            py36h785a196_1  
+pyqt                      5.9.2            py36h1aa27d4_0  
+pysocks                   1.6.8                    py36_0  
+pytables                  3.4.3            py36he6f6034_1  
+pytest                    3.5.1                    py36_0  
+pytest-arraydiff          0.2                      py36_0  
+pytest-astropy            0.3.0                    py36_0  
+pytest-doctestplus        0.1.3                    py36_0  
+pytest-openfiles          0.3.0                    py36_0  
+pytest-remotedata         0.2.1                    py36_0  
+python                    3.6.5                h0c2934d_0  
+python-dateutil           2.7.3                    py36_0  
+pytorch                   0.4.1           py36_cuda90_cudnn7he774522_1    pytorch
+pytz                      2018.4                   py36_0  
+pywavelets                0.5.2            py36hc649158_0  
+pywin32                   223              py36hfa6e2cd_1  
+pywinpty                  0.5.1                    py36_0  
+pyyaml                    3.12             py36h1d1928f_1  
+pyzmq                     17.0.0           py36hfa6e2cd_1  
+qt                        5.9.5            vc14he4a7d60_0  [vc14]  anaconda
+qtawesome                 0.4.4            py36h5aa48f6_0  
+qtconsole                 4.3.1            py36h99a29a9_0  
+qtpy                      1.4.1                    py36_0  
+r-abind                   1.4_5                  mro351_0    r
+r-assertthat              0.2.0                  mro351_0    r
+r-backports               1.1.2                  mro351_0    r
+r-base64enc               0.1_3                  mro351_0    r
+r-bh                      1.66.0_1        mro351hf348343_0    r
+r-bindr                   0.1.1                  mro351_0    r
+r-bindrcpp                0.2.2                  mro351_0    r
+r-boot                    1.3_20                 mro351_0    r
+r-broom                   0.5.0                  mro351_0    r
+r-callr                   2.0.4                  mro351_0    r
+r-caret                   6.0_80                 mro351_0    r
+r-cellranger              1.1.0                  mro351_0    r
+r-checkpoint              0.4.4                  mro351_0    r
+r-class                   7.3_14                 mro351_0    r
+r-cli                     1.0.0                  mro351_0    r
+r-clipr                   0.4.1                  mro351_0    r
+r-cluster                 2.0.7_1                mro351_0    r
+r-codetools               0.2_15                 mro351_0    r
+r-colorspace              1.3_2                  mro351_0    r
+r-crayon                  1.3.4                  mro351_0    r
+r-curl                    3.2                    mro351_0    r
+r-cvst                    0.2_2           mro351hf348343_0    r
+r-data.table              1.11.4                 mro351_0    r
+r-dbi                     1.0.0           mro351hf348343_0    r
+r-dbplyr                  1.2.2                  mro351_0    r
+r-ddalpha                 1.3.4                  mro351_0    r
+r-deoptimr                1.0_8           mro351hf348343_0    r
+r-deployrrserve           9.0.0                  mro351_0    r
+r-dichromat               2.0_0                  mro351_0    r
+r-digest                  0.6.15                 mro351_0    r
+r-dimred                  0.1.0           mro351hf348343_0    r
+r-doparallel              1.0.13                 mro351_0    r
+r-dplyr                   0.7.6                  mro351_0    r
+r-drr                     0.0.3           mro351hf348343_0    r
+r-essentials              3.4.3                  mro343_0    r
+r-evaluate                0.11                   mro351_0    r
+r-fansi                   0.2.3                  mro351_0    r
+r-forcats                 0.3.0                  mro351_0    r
+r-foreach                 1.5.0                  mro351_0    r
+r-foreign                 0.8_70                 mro351_0    r
+r-formatr                 1.5             mro351hf348343_0    r
+r-geometry                0.3_6                  mro351_0    r
+r-ggplot2                 3.0.0                  mro351_0    r
+r-glmnet                  2.0_16                 mro351_0    r
+r-glue                    1.3.0                  mro351_0    r
+r-gower                   0.1.2                  mro351_0    r
+r-gtable                  0.2.0                  mro351_0    r
+r-haven                   1.1.2                  mro351_0    r
+r-hexbin                  1.27.2                 mro351_0    r
+r-highr                   0.7                    mro351_0    r
+r-hms                     0.4.2                  mro351_0    r
+r-htmltools               0.3.6                  mro351_0    r
+r-htmlwidgets             1.2                    mro351_0    r
+r-httpuv                  1.4.5                  mro351_0    r
+r-httr                    1.3.1                  mro351_0    r
+r-ipred                   0.9_6                  mro351_0    r
+r-irdisplay               0.5.0           mro351hf348343_0    r
+r-irkernel                0.8.11                 mro343_0    r
+r-iterators               1.0.10                 mro351_0    r
+r-jsonlite                1.5                    mro351_0    r
+r-kernlab                 0.9_26                 mro351_0    r
+r-kernsmooth              2.23_15         mro351hf348343_0    r
+r-knitr                   1.20                   mro351_0    r
+r-labeling                0.3                    mro351_0    r
+r-later                   0.7.3                  mro351_0    r
+r-lattice                 0.20_35                mro351_0    r
+r-lava                    1.6.2                  mro351_0    r
+r-lazyeval                0.2.1                  mro351_0    r
+r-lubridate               1.7.4                  mro351_0    r
+r-magic                   1.5_8                  mro351_0    r
+r-magrittr                1.5                    mro351_0    r
+r-maps                    3.3.0                  mro351_0    r
+r-markdown                0.8                    mro351_0    r
+r-mass                    7.3_49                 mro351_0    r
+r-matrix                  1.2_14          mro351hf348343_0    r
+r-mgcv                    1.8_23                 mro351_0    r
+r-microsoftr              3.5.0.108              mro351_0    r
+r-mime                    0.5                    mro351_0    r
+r-modelmetrics            1.1.0           mro351hf348343_0    r
+r-modelr                  0.1.2                  mro351_0    r
+r-munsell                 0.5.0                  mro351_0    r
+r-nlme                    3.1_137                mro351_0    r
+r-nnet                    7.3_12                 mro351_0    r
+r-numderiv                2016.8_1        mro351hf348343_0    r
+r-openssl                 1.0.2                  mro351_0    r
+r-pbdzmq                  0.3_3           mro351hf348343_0    r
+r-pillar                  1.3.0                  mro351_0    r
+r-pkgconfig               2.0.1                  mro351_0    r
+r-plogr                   0.2.0                  mro351_0    r
+r-pls                     2.6_0                  mro351_0    r
+r-plyr                    1.8.4                  mro351_0    r
+r-png                     0.1_7                  mro351_0    r
+r-praise                  1.0.0                  mro351_0    r
+r-processx                3.1.0                  mro351_0    r
+r-prodlim                 2018.04.18             mro351_0    r
+r-promises                1.0.1                  mro351_0    r
+r-purrr                   0.2.5                  mro351_0    r
+r-quantmod                0.4_13                 mro351_0    r
+r-r6                      2.2.2           mro351hf348343_0    r
+r-randomforest            4.6_14          mro351hf348343_0    r
+r-rbokeh                  0.6.3                  mro351_0    r
+r-rcolorbrewer            1.1_2           mro351hf348343_0    r
+r-rcpp                    0.12.18         mro351hf348343_0    r
+r-rcpproll                0.3.0           mro351hf348343_0    r
+r-readr                   1.1.1                  mro351_0    r
+r-readxl                  1.1.0                  mro351_0    r
+r-recipes                 0.1.3                  mro351_0    r
+r-recommended             3.5.1                  mro351_0    r
+r-rematch                 1.0.1                  mro351_0    r
+r-repr                    0.15.0                 mro351_0    r
+r-reprex                  0.2.0                  mro351_0    r
+r-reshape2                1.4.3                  mro351_0    r
+r-revoioq                 10.0.0                 mro351_0    r
+r-revomods                11.0.0                 mro351_0    r
+r-revoutils               11.0.0                 mro351_0    r
+r-revoutilsmath           11.0.0                 mro351_0    r
+r-rlang                   0.2.1                  mro351_0    r
+r-rmarkdown               1.10                   mro351_0    r
+r-robustbase              0.93_2                 mro351_0    r
+r-rpart                   4.1_13                 mro351_0    r
+r-rprojroot               1.3_2                  mro351_0    r
+r-rstudioapi              0.7                    mro351_0    r
+r-runit                   0.4.26                 mro351_0    r
+r-rvest                   0.3.2                  mro351_0    r
+r-scales                  0.5.0                  mro351_0    r
+r-selectr                 0.4_1                  mro351_0    r
+r-sfsmisc                 1.1_2                  mro351_0    r
+r-shiny                   1.1.0                  mro351_0    r
+r-sourcetools             0.1.7                  mro351_0    r
+r-spatial                 7.3_11                 mro351_0    r
+r-squarem                 2017.10_1       mro351hf348343_0    r
+r-stringi                 1.1.7                  mro351_0    r
+r-stringr                 1.3.1                  mro351_0    r
+r-survival                2.41_3                 mro351_0    r
+r-testthat                2.0.0                  mro351_0    r
+r-tibble                  1.4.2                  mro351_0    r
+r-tidyr                   0.8.1                  mro351_0    r
+r-tidyselect              0.2.4                  mro351_0    r
+r-tidyverse               1.2.1                  mro351_0    r
+r-timedate                3043.102        mro351hf348343_0    r
+r-tinytex                 0.6                    mro351_0    r
+r-ttr                     0.23_3          mro351hf348343_0    r
+r-utf8                    1.1.4                  mro351_0    r
+r-uuid                    0.1_2                  mro351_0    r
+r-viridislite             0.3.0           mro351hf348343_0    r
+r-whisker                 0.3_2                  mro351_0    r
+r-withr                   2.1.2                  mro351_0    r
+r-xfun                    0.3                    mro351_0    r
+r-xml2                    1.2.0                  mro351_0    r
+r-xtable                  1.8_2                  mro351_0    r
+r-xts                     0.11_0                 mro351_0    r
+r-yaml                    2.2.0                  mro351_0    r
+r-zoo                     1.8_3                  mro351_0    r
+requests                  2.18.4           py36h4371aae_1  
+rope                      0.10.7           py36had63a69_0  
+ruamel_yaml               0.15.35          py36hfa6e2cd_1  
+scikit-image              0.13.1           py36hfa6e2cd_1  
+scikit-learn              0.19.1           py36h53aea1b_0  
+scipy                     1.1.0            py36h672f292_0  
+seaborn                   0.8.1            py36h9b69545_0  
+send2trash                1.5.0                    py36_0  
+setuptools                39.1.0                   py36_0  
+simplegeneric             0.8.1                    py36_2  
+singledispatch            3.4.0.3          py36h17d0c80_0  
+sip                       4.19.8           py36h6538335_0  
+six                       1.11.0           py36h4db2310_1  
+snappy                    1.1.7                h777316e_3  
+snowballstemmer           1.2.1            py36h763602f_0  
+sortedcollections         0.6.1                    py36_0  
+sortedcontainers          1.5.10                   py36_0  
+sphinx                    1.7.4                    py36_0  
+sphinxcontrib             1.0              py36hbbac3d2_1  
+sphinxcontrib-websupport  1.0.1            py36hb5e5916_1  
+spyder                    3.2.8                    py36_0  
+sqlalchemy                1.2.7            py36ha85dd04_0  
+sqlite                    3.23.1               h35aae40_0  
+statsmodels               0.9.0            py36h452e1ab_0  
+sympy                     1.1.1            py36h96708e0_0  
+tblib                     1.3.2            py36h30f5020_0  
+tensorboard               1.11.0           py36he025d50_0    anaconda
+tensorflow                1.11.0          gpu_py36h5dc63e2_0    anaconda
+tensorflow-base           1.11.0          gpu_py36h6e53903_0    anaconda
+tensorflow-gpu            1.11.0               h0d30ee6_0    anaconda
+termcolor                 1.1.0                    py36_1    anaconda
+terminado                 0.8.1                    py36_1  
+testpath                  0.3.1            py36h2698cfe_0  
+tk                        8.6.7                hcb92d03_3  
+toolz                     0.9.0                    py36_0  
+torchfile                 0.1.0                     <pip>
+torchvision               0.2.1                     <pip>
+tornado                   5.0.2                    py36_0  
+tqdm                      4.28.1                    <pip>
+traitlets                 4.3.2            py36h096827d_0  
+typing                    3.6.4                    py36_0  
+unicodecsv                0.14.1           py36h6450c06_0  
+urllib3                   1.22             py36h276f60a_0  
+vc                        14                   h0510ff6_3  
+visdom                    0.1.8.5                   <pip>
+vs2015_runtime            14.0.25123                    3  
+wcwidth                   0.1.7            py36h3d5aa90_0  
+webencodings              0.5.1            py36h67c50ae_1  
+websocket-client          0.54.0                    <pip>
+werkzeug                  0.14.1                   py36_0  
+wheel                     0.31.1                   py36_0  
+widgetsnbextension        3.2.1                    py36_0  
+win_inet_pton             1.0.1            py36he67d7fd_1  
+win_unicode_console       0.5              py36hcdbd4b5_0  
+wincertstore              0.2              py36h7fe50ca_0  
+winpty                    0.4.3                         4  
+wrapt                     1.10.11          py36he5f5981_0  
+xlrd                      1.1.0            py36h1cb58dc_1  
+xlsxwriter                1.0.4                    py36_0  
+xlwings                   0.11.8                   py36_0  
+xlwt                      1.3.0            py36h1a4751e_0  
+yaml                      0.1.7                hc54c509_2  
+zeromq                    4.2.5                hc6251cf_0  
+zict                      0.1.3            py36h2d8e73e_0  
+zlib                      1.2.11               h8395fce_2  

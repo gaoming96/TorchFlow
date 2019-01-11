@@ -1,0 +1,16 @@
+01/11/2019 00:25:37 MainProcess     MainThread      logger          log_setup                 INFO     Log level set to: INFO
+01/11/2019 00:25:39 MainProcess     MainThread      fsmedia         check_input_folder        INFO     Input Directory: C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump
+01/11/2019 00:25:39 MainProcess     MainThread      alignments      load                      INFO     Reading alignments from: 'C:\Users\kanny\Desktop\playground\deepfakes\faceswap\photo\trump\alignments.json'
+01/11/2019 00:25:39 MainProcess     MainThread      plugin_loader   _import                   INFO     Loading Model from Model_Original plugin...
+01/11/2019 00:25:42 MainProcess     MainThread      AutoEncoder     load                      WARNING  Error loading training info: No such file or directory
+01/11/2019 00:25:45 MainProcess     MainThread      AutoEncoder     load                      INFO     loaded model weights
+01/11/2019 00:25:45 MainProcess     MainThread      plugin_loader   _import                   INFO     Loading Convert from Convert_Masked plugin...
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     -------------------------
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     Images found: 5
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     Faces detected: 6
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     -------------------------
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     Note:
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     Multiple faces were detected in one or more pictures.
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     Double check your results.
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     -------------------------
+01/11/2019 00:25:48 MainProcess     MainThread      fsmedia         finalize                  INFO     Process Succesfully Completed. Shutting Down...
