@@ -9,7 +9,7 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 4. [CycleGAN](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
 5. [Progressive-growing-GAN](https://github.com/tkarras/progressive_growing_of_gans)
 6. [pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
-
+7. [Deepfake](https://github.com/deepfakes/faceswap)
 
 ## Neural-style
 
@@ -99,7 +99,9 @@ Transform Net:
 
 LOSS = content + style + TV (Total Variation Regularization).
 
-We can see this model in a easy way. If we forget VGG net, we use a Network to get output and compute LOSS (**very specific deep learning unreasonable thoughts**): pixel-difference of output and style. However, pixel-difference cannot handel semantic and Perceptral things (eg: if move a figure one pixel up, pixel loss is high). Luckily VGG can represent some Perceptral of a figure.
+We can see this model in a easy way. If we forget VGG net, we use a Network to get output and compute LOSS (**very typical deep learning unreasonable thoughts**): pixel-difference of output and style. However, pixel-difference cannot handel semantic and Perceptral things (eg: if move a figure one pixel up, pixel loss is high). Luckily VGG can represent some Perceptral of a figure. 
+
+It is called Perceptual LOSS. It shows clearer output compared with MSE because mean is the average, will blur the picture.
 
 ![](.././pics/fast_style_structure.jpg)
 
