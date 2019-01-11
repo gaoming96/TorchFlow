@@ -350,6 +350,10 @@ python setup.py
 The above code will download used packages for us automatically.
 
 ### Usage
+Note that since the pretrain model is too big, I don't put it in the repository. You can download at https://anonfile.com/p7w3m0d5be/face-swap.zip.
+
+Also, since the original github repository is updating everyday, we can clone and pull the original one rather than my-forking one. However, what is different is models, photo, data, output directories.
+
 See the official [usage](https://github.com/deepfakes/faceswap/blob/master/USAGE.md)
 
 #### Extract
