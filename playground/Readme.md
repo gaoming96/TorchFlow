@@ -309,7 +309,7 @@ We use FFmpeg to transfer. Turn a video into many many fix rate pictures.
 We turn a photo into face. We use `dlib` library. It is based on HOG method. We can use 68 points to label a face.
 ![](.././pics/dlib.jpg)
 
-It is defined in `extract.py` to extract faces (in \data folder) from photos.
+It is defined in `extract.py` to extract faces (in \data folder) from photos. If face not detected, it will rotate the photo.
 
 #### face transformation
 We use encoder decoder to realize it. Suppose X=AUB, A,B is the faces. We learn encoder from all of the data (encoder is the universality of all the faces). Decoder learns specific person. Note that we use `PixelShuffler()` function to add distortion to the figure (because direction of faces may vary).
