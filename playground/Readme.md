@@ -426,6 +426,8 @@ All of the below tricks are [here](https://github.com/shaoanlu/faceswap-GAN).
 
 ![](.././pics/deepfake_gan1.jpg)
 
+Here we warped the picture to add noises.
+
 ![](.././pics/deepfake_gan2.jpg)
 
 ![](.././pics/deepfake_gan3.jpg)
