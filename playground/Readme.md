@@ -313,6 +313,8 @@ We turn a photo into face. We use `dlib` library. It is based on HOG method. We 
 
 It is defined in `extract.py` to extract faces (in \data folder) from photos. If face not detected, it will rotate the photo.
 
+We need to do alignment (make face horizontal and vertical) and crop photo into faces. The information is saved in `alignments.json` which is used at test step to convert photos.
+
 #### face transformation
 We use encoder decoder to realize it. Suppose X=AUB, A,B is the faces. We learn encoder from all of the data (encoder is the universality of all the faces). Decoder learns specific person. Note that we use `PixelShuffler()` function to add distortion to the figure (because direction of faces may vary).
 
@@ -333,6 +335,8 @@ It is done in `train.py` and `Trainer.py`
 
 #### Convert faces
 `convert.py` to put our result (fakeB) in testA.
+
+![](.././pics/deepfake_convert.jpg)
 
 #### Model structure
 ![](.././pics/deepfake_structure.png)
@@ -385,6 +389,8 @@ Error: Alignments file not found at C:\Users\kanny\Desktop\playground\deepfakes\
 ```
 `alignments.json` is created in the `extract` step, which indicates, for each aligned frame, its original position in the image from which it was extracted. So it is used in the `convert` step.
 
+Finally, we do color correction.
+
 #### Pre-trained model
 A pre-trained model is not required, but you can download the following pre-trained Cage/Trump training model. It contains faces of Trump and Cage and 2 decoder & 1 encoder.
 
@@ -407,3 +413,5 @@ python faceswap.py extract -i photo\trump -o data\trump -D dlib-hog -A dlib
 python faceswap.py convert -i photo\trump -o output\ -m models\
 ```
 
+### FakeApp
+FakeApp is a silly software for all people to use easily. [Here](https://www.alanzucconi.com/2018/03/14/how-to-install-fakeapp/) to see how to install and use.
