@@ -294,6 +294,8 @@ Hilarie and Trump:
 
 ![](.././pics/result.gif)
 
+The still updating fantastic github page is [here](https://github.com/deepfakes/faceswap). However, it contains so many different models and even a GUI is allowed. Thus, for clearity, we may take a look at [here](https://github.com/joshua-wu/deepfakes_faceswap).
+
 ### Theory
 How to realize that? We have to do these five steps.
 ![](.././pics/deepfake_basic.jpg)
