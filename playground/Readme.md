@@ -396,11 +396,6 @@ A pre-trained model is not required, but you can download the following pre-trai
 
 Whole project with training images and trained model (~300MB): https://anonfile.com/p7w3m0d5be/face-swap.zip.
 
-Some tips:
-
-Reusing existing models will train much faster than starting from nothing.
-If there is not enough training data, start with someone who looks similar, then switch the data.
-
 My try:
 
 The faces data is acutally of no use. We use `.h5` files and suppose they are in directory: faceswap\models\.
@@ -415,3 +410,26 @@ python faceswap.py convert -i photo\trump -o output\ -m models\
 
 ### FakeApp
 FakeApp is a silly software for all people to use easily. [Here](https://www.alanzucconi.com/2018/03/14/how-to-install-fakeapp/) to see how to install and use.
+
+### Tips
+
+1.Reusing existing models will train much faster than starting from nothing.
+If there is not enough training data, start with someone who looks similar, then switch the data.
+
+2.Split frames based on face orientation and train different models. (Because rotating faces is also very challenging)
+
+All of the below tricks are [here](https://github.com/shaoanlu/faceswap-GAN).
+
+3.Use GAN instead of AutoEncoder.
+
+4.Add perceptual loss (with the help of VGG, see fast neural style).
+
+![](.././pics/deepfake_gan1.jpg)
+
+![](.././pics/deepfake_gan2.jpg)
+
+![](.././pics/deepfake_gan3.jpg)
+
+5.Use attention. Attention mask: Model predicts an attention mask that helps on handling occlusion, eliminating artifacts, and producing natrual skin tone. In below are results of Emi Takei (武井咲).
+
+![](.././pics/deepfake_gan4.gif)
