@@ -10,6 +10,7 @@ I use Windows 10, 8@i5-8250U CPU, NVIDIA GeForce MX 150 GPU.
 5. [Progressive-growing-GAN](https://github.com/tkarras/progressive_growing_of_gans)
 6. [pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix)
 7. [Deepfake](https://github.com/deepfakes/faceswap)
+8. [DanQ](https://github.com/uci-cbcl/DanQ)
 
 ## Neural-style
 
@@ -435,3 +436,34 @@ Here we warped the picture to add noises.
 5.Use attention. Attention mask: Model predicts an attention mask that helps on handling occlusion, eliminating artifacts, and producing natrual skin tone. In below are results of Emi Takei (武井咲).
 
 ![](.././pics/deepfake_gan4.gif)
+
+## DanQ
+I don't fork DanQ because the original github page is realized by keras. The reason I write DanQ here is because it combines CNN and RNN.
+
+DanQ: a hybrid convolutional and recurrent deep neural network for quantifying the function of DNA sequences.
+
+The convolution layer captures regulatory motifs, while the recurrent layer captures long-term dependencies between the motifs in order
+to learn a regulatory ‘grammar’ to improve predictions. This weightsharing strategy is especially useful for studying DNA because
+the convolution filters can capture sequence motifs, which are short, recurring patterns in DNA that are presumed to have a biological function. 
+
+Input: an obeservation: 1000 DNA sequence, each is a number (1,2,3,4) representing (A、T、C、G). We turn into [4,1000] onehot matrix [input,seq].
+
+Output: a [919] vector, each is binary (0/1). 919 chromatin features; a chromatin feature was labeled 1 if more than half of the 1000-bp bin is in the peak region and 0 otherwise.
+
+### Model structure
+CNN: 1D CNN, input [4,1000] => 320@ kernel size: [4,26] => [320,1000-26] => Relu+maxpooling [320,n] (suppose n=500).
+
+RNN: Bidirection LSTM: input [320,500] [seq=500, batch=1, input_dim=320] => hidden:[seq=500, batch=1, hid_dim=320].
+
+Flatten+Fully connected+RELU => [919] => element wise sigmoid function [919]. Each number is a probability that this output is 1.
+
+We use RMSprop to update and multi-task binary cross entropy loss function.
+
+### DNA motifs
+![](.././pics/danq_structure.jpg)
+
+The left fig is model structure and right fig is motifs.
+
+These 320 learned kernels [4,26] can be viewd as motrifs. Indeed, more than a half of the kernels is aligned to known motifs. We plot motifs' logo, where logo bigger means corresponding value is bigger in this matrix.
+
+Also, since weight initialization is known to play crucial role for the performance neural networks, we initial some of the weights at known motifs and get better result.
